@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
-import styles from './App.css';
-import Button from './components/UI/Button/Button';
-import * as utility from './shared/utility';
+import { BrowserRouter} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+
+import LandingPage from './components/LandingPage/LandingPage';
+import Auth from './containers/Auth/Auth';
+import User from './containers/User/User';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-      </div>
+        <BrowserRouter>
+            <div className="App">
+                <Switch>
+                    <Route path="/callback" component={Auth} />
+                    <Route path="/user"  component={User} />
+                    <Route path="/" component={LandingPage} />
+                </Switch>
+            </div>
+        </BrowserRouter>
     );
   }
 }
