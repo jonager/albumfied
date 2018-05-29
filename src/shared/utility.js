@@ -1,11 +1,11 @@
 import * as env from '../env';
 
 export const spotifyAuth = () => {
-    window.location.href = `https://accounts.spotify.com/authorize?client_id=${env.CLIENT_ID}&response_type=token&redirect_uri=http://localhost:3002/callback/`
+    let scope = "user-library-read user-library-modify user-read-email streaming";
+    window.location.href = `https://accounts.spotify.com/authorize?client_id=${env.CLIENT_ID}&response_type=token&redirect_uri=http://localhost:3000/callback/&${scope}`
 };
 
-export const parseParam = (param) => {
-    let hash = window.location.hash.substr(1);
+export const parseParam = (hash, param) => {
     let urlParams = new URLSearchParams(hash);
     let  value = urlParams.get(param);
 

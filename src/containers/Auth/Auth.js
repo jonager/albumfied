@@ -3,14 +3,17 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import * as utility from '../../shared/utility';
-
+import axios from 'axios';
 class Auth extends Component {
-    render() { 
-        let token = utility.parseParam('access_token');
+    componentDidMount() {
+        let token = utility.parseParam(this.props.location.hash.substr(1), 'access_token');
         if(token) {
             this.props.onGetAuth(token);
+            this.props.onSetUserId(token);
         }
+    }
 
+    render() { 
         return (
             <Redirect to="/user" />
         );
@@ -19,7 +22,8 @@ class Auth extends Component {
  
 const mapDispatchToProps = dispatch => {
     return {
-        onGetAuth: (token) => dispatch(actions.getAuth(token))
+        onGetAuth: (token) => dispatch(actions.getAuth(token)),
+        onSetUserId: (token) => dispatch(actions.getUserId(token))
     };
 };
 
