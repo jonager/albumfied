@@ -3,13 +3,14 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import * as utility from '../../shared/utility';
-import axios from 'axios';
 class Auth extends Component {
     componentDidMount() {
+        // Get authentication from spotify
         let token = utility.parseParam(this.props.location.hash.substr(1), 'access_token');
+        
         if(token) {
             this.props.onGetAuth(token);
-            this.props.onSetUserId(token);
+            this.props.onSetUserId(token);     
         }
     }
 
@@ -19,11 +20,17 @@ class Auth extends Component {
         );
     }
 }
+
+// const mapStateToProps = state => {
+//     return {
+//         userId: state.auth.userId
+//     };
+// };
  
 const mapDispatchToProps = dispatch => {
     return {
         onGetAuth: (token) => dispatch(actions.getAuth(token)),
-        onSetUserId: (token) => dispatch(actions.getUserId(token))
+        onSetUserId: (token) => dispatch(actions.getUserId(token)),
     };
 };
 

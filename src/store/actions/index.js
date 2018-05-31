@@ -1,5 +1,5 @@
 export {
     getAuth,
-    userLogin,
-    getUserId
+    getUserId,
+
 } from './auth';

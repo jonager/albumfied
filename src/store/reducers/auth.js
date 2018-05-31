@@ -3,8 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     spotifyToken: null,
     userId: null,
-    error: null,
     isAuth: false,
+    error: null,
     loading: false,
 };
 
@@ -17,7 +17,6 @@ const reducer = ( state = initialState, action ) => {
                 isAuth: true
             }
         case actionTypes.SET_USER_ID:
-            console.log(action.userId);
             return {
                 ...state,
                 userId: action.userId
