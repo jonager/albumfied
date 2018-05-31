@@ -24,6 +24,24 @@ const addUserFirebase = (userId) => {
     });
 };
 
+export const getAlbums = (token) => {
+    console.log(token)
+    axios({
+        method:'get',
+        url:'https://api.spotify.com/v1/me/albums',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }})
+        .then( (response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+};
+
 export const getUserId = (token) => {
     return dispatch => {
         axios({
@@ -35,6 +53,7 @@ export const getUserId = (token) => {
             .then( (response) => {
                 dispatch(setUserId(response.data.id));
                 addUserFirebase(response.data.id);
+                getAlbums(token);
             })
             .catch((error) => {
                 console.log(error);
