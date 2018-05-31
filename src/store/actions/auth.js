@@ -1,5 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
+import fire from '../../fire';
+
 
 export const getAuth = (token) => {
     return {
@@ -15,6 +17,13 @@ export const setUserId = (userId) => {
     }
 }
 
+const addUserFirebase = (userId) => {
+    console.log(userId);
+    fire.database().ref('users/' + userId).push({
+        userName: userId
+    });
+};
+
 export const getUserId = (token) => {
     return dispatch => {
         axios({
@@ -25,10 +34,10 @@ export const getUserId = (token) => {
             }})
             .then( (response) => {
                 dispatch(setUserId(response.data.id));
+                addUserFirebase(response.data.id);
             })
             .catch((error) => {
                 console.log(error);
             })
     }
 }
-
