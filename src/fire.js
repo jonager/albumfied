@@ -3,10 +3,10 @@ import * as env from './env';
 
 var config = {
     apiKey: env.SPOTIFY_API_KEY,
-    authDomain: "albumfied.firebaseapp.com",
-    databaseURL: "https://albumfied.firebaseio.com",
-    projectId: "albumfied",
-    storageBucket: "albumfied.appspot.com",
+    authDomain: env.AUTH_DOMAIN,
+    databaseURL: env.DATABASE_URL,
+    projectId: env.PROJECT_ID,
+    storageBucket: env.STORAGE_BUTCKET,
     messagingSenderId: env.MESSAGING_SENDER_ID
   };
 
