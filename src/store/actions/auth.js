@@ -9,6 +9,12 @@ export const getAuth = (token) => {
     };
 };
 
+export const userLogout = (token) => {
+    return {
+        type: actionTypes.USER_LOGOUT
+    };
+};
+
 export const setUserId = (userId) => {
     return {
         type: actionTypes.SET_USER_ID,

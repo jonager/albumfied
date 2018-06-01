@@ -21,6 +21,13 @@ const reducer = ( state = initialState, action ) => {
                 ...state,
                 userId: action.userId
             }
+        case actionTypes.USER_LOGOUT:
+            return {
+                ...state,
+                spotifyToken: null,
+                userId: null,
+                isAuth: false
+            }
         default:
             return state;
     }

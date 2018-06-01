@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import LandingPage from './components/LandingPage/LandingPage';
 import Auth from './containers/Auth/Auth';
 import User from './containers/User/User';
+import Logout from './containers/Auth/Logout/Logout';
 class App extends Component {
   render() {
     return (
@@ -14,6 +15,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/callback" component={Auth} />
                     <Route path="/user" component={User} />
+                    <Route path="/logout" component={Logout} />
                     <Route path="/" render={(props) => <LandingPage {...props} isAuth={this.props.isAuth} />}/>
                 </Switch>
             </div>
