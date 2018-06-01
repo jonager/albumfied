@@ -21,12 +21,6 @@ class Auth extends Component {
     }
 }
 
-// const mapStateToProps = state => {
-//     return {
-//         userId: state.auth.userId
-//     };
-// };
- 
 const mapDispatchToProps = dispatch => {
     return {
         onGetAuth: (token) => dispatch(actions.getAuth(token)),

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter} from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import LandingPage from './components/LandingPage/LandingPage';
 import Auth from './containers/Auth/Auth';
@@ -13,7 +14,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/callback" component={Auth} />
                     <Route path="/user" component={User} />
-                    <Route path="/" component={LandingPage} />
+                    <Route path="/" render={(props) => <LandingPage {...props} isAuth={this.props.isAuth} />}/>
                 </Switch>
             </div>
         </BrowserRouter>
@@ -21,4 +22,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        isAuth: state.auth.isAuth
+    }
+}
+
+export default connect(mapStateToProps)(App);

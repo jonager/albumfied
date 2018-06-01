@@ -1,0 +1,29 @@
+.Header {
+    padding: 25px 45px;;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Header a {
+    text-decoration: none;
+    color: white;
+}
+
+/* .RightHeader a{
+    margin-left: 10px;
+} */
+
+.LeftHeader i {
+    color: white;
+    font-size: 25px;
+}
+
+.LeftHeader a {
+    font-size: 25px;
+    margin-left: 5px;
+    font-weight: bold;
+    letter-spacing: 0.1px;
+}
