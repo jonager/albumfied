@@ -1,5 +1,5 @@
 import React from 'react';
-import {  Link } from 'react-router-dom'; 
+import { NavLink, Link } from 'react-router-dom'; 
 import styles from './Header.css';
 import Button from '../../UI/Button/Button';
 import  * as utility from '../../../shared/utility';
@@ -12,10 +12,10 @@ const Header = (props) => {
                 <a href="#default">AlbumFied</a>
             </div>
             <div className={styles.RightHeader}>
-                <Link to="https://github.com/jonager/albumfied">Repo</Link>
+                <a href="https://github.com/jonager/albumfied" target="_blank"><i className="fab fa-github"></i></a>
                 {!props.isAuth 
-                    ? <Button btnType={'Login'} clicked={utility.spotifyAuth}> Log In</Button>
-                    : <Link to="/logout">Logout</Link>}
+                    ? <Button btnType={'Login-Header'} clicked={utility.spotifyAuth}> Log In</Button>
+                    : <NavLink className={styles.LeftHeader} to="/logout">Logout</NavLink>}
             </div>
         </div>
     );
