@@ -1,0 +1,40 @@
+.Hero{
+    height: 91vh;
+    background: url("../../assets/img/party.jpg") no-repeat center center;
+    background-size: cover;
+}
+
+.HeroContent {
+    text-align: center;
+    padding-top: 100px;
+}
+
+.HeroContent h1 {
+    font-size: 6em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.HeroContent p {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 175px;
+}
+
+.HeroContent a {
+    display: inline-block;
+    padding: 8.5px 0;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    width: 250px;
+    font-size: 2.25em;
+    letter-spacing: 0.15px;
+    border-radius: 22px;
+}
+
+.HeroContent a:hover {
+    background-color: white;
+    color: black;
+}

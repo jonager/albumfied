@@ -1,5 +1,4 @@
 .Button {
-    font-weight: bold;
     background-color: transparent;
     border: none;
     outline: none;
@@ -24,6 +23,23 @@
     padding: 8.5px 0;
     margin-left: 20px;
     font-size: 20px;
+    border-radius: 22px;
+}
+
+
+.Login-Hero {
+    color: white;
+    background-color: #1db954;
+    width: 250px;
+    border-radius: 22px;
+    padding: 8.5px 0;
+    margin-left: 100px;
+    font-size: 2.25em;
+}
+
+.Login-Hero:hover {
+    color: #1ed760;
+    background-color: white;
 }
 
 .Login:hover {

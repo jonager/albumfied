@@ -1,9 +1,11 @@
 .Header {
     padding: 25px 100px;;
+    height: 9vh;
     background-color: black;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    box-sizing: border-box
 }
 
 .Header a {
@@ -11,9 +13,11 @@
     color: white;
 }
 
-/* .RightHeader a{
-    margin-left: 10px;
-} */
+.LeftHeader {
+    display: flex;
+    flex-direction: row;    
+    align-items: center;
+}
 
 .LeftHeader i {
     color: white;
@@ -35,8 +39,5 @@
 
 .RightHeader a {
     margin-left: 20px;
-    font-size: 40px;
-    display: flex;
-    flex-direction: row;    
-    align-items: center;    
+    font-size: 40px;   
 }
