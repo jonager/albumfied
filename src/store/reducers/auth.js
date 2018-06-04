@@ -3,7 +3,6 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     spotifyToken: null,
     userId: null,
-    isAuth: false,
     error: null,
     loading: false,
 };
@@ -13,8 +12,7 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.GET_AUTH: 
             return {
                 ...state,
-                spotifyToken: action.token,
-                isAuth: true
+                spotifyToken: action.token
             }
         case actionTypes.SET_USER_ID:
             return {
@@ -25,8 +23,7 @@ const reducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 spotifyToken: null,
-                userId: null,
-                isAuth: false
+                userId: null
             }
         default:
             return state;

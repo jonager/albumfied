@@ -3,6 +3,7 @@ import axios from 'axios';
 import fire from '../../fire';
 
 export const getAuth = (token) => {
+    localStorage.setItem('token', token);    
     return {
         type: actionTypes.GET_AUTH,
         token: token
@@ -10,6 +11,8 @@ export const getAuth = (token) => {
 };
 
 export const userLogout = (token) => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     return {
         type: actionTypes.USER_LOGOUT
     };
@@ -65,6 +68,7 @@ export const getUserId = (token) => {
             }})
             .then( (response) => {
                 const userId = response.data.id;
+                localStorage.setItem('userId', userId);
                 dispatch(setUserId(userId));
                 checkUserExists(userId, token);
             })

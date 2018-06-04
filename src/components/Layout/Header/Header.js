@@ -5,6 +5,7 @@ import Button from '../../UI/Button/Button';
 import  * as utility from '../../../shared/utility';
 
 const Header = (props) => {
+    let token = localStorage.getItem('token');
     return (
         <div className={styles.Header}>
             <div className={styles.LeftHeader}>
@@ -13,7 +14,7 @@ const Header = (props) => {
             </div>
             <div className={styles.RightHeader}>
                 <a href="https://github.com/jonager/albumfied" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
-                {!props.isAuth 
+                {!token
                     ? <Button btnType={'Login-Header'} clicked={utility.spotifyAuth}> Log In</Button>
                     : <NavLink className={styles.LeftHeader} to="/logout">Logout</NavLink>}
             </div>
