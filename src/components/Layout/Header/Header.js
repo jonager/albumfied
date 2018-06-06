@@ -6,6 +6,17 @@ import  * as utility from '../../../shared/utility';
 
 const Header = (props) => {
     let token = localStorage.getItem('token');
+    let timeout = null;
+
+    const inputChangeHandler = event => {
+        event.persist();
+        clearTimeout(timeout);
+
+        timeout = setTimeout(function() {
+            utility.searchItem(token, event.target.value);
+        }, 2500);
+    }
+    
     return (
         <div className={styles.Header}>
             <div className={styles.LeftHeader}>
@@ -13,6 +24,7 @@ const Header = (props) => {
                 <a href="#default">AlbumFied</a>
             </div>
             <div className={styles.RightHeader}>
+                {token ? <input type="text" onKeyDown={inputChangeHandler}></input> : null}
                 <a href="https://github.com/jonager/albumfied" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
                 {!token
                     ? <Button btnType={'Login-Header'} clicked={utility.spotifyAuth}> Log In</Button>
