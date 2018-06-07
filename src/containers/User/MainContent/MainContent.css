@@ -1,0 +1,5 @@
+.MainContent {
+    display: grid;
+    grid-template-columns: 17% 83%;
+    grid-template-rows: 100%;
+}

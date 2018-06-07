@@ -6,7 +6,6 @@
     flex-direction: row;
     justify-content: space-between;
     box-sizing: border-box;
-    grid-column: 1 / span 2;
 }
 
 .Header a {

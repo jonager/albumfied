@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../../components/Layout/Header/Header';
-import Sidebar from '../../components/Layout/Sidebar/Sidebar';
+import MainContent from './MainContent/MainContent';
 import styles from './User.css';
 
 class User extends Component {
@@ -8,7 +8,7 @@ class User extends Component {
         return ( 
             <div className={styles.Layout}>
                 <Header className/>
-                <Sidebar/>
+                <MainContent/>
             </div>
          );
     }
