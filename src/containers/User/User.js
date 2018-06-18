@@ -4,14 +4,14 @@ import MainContent from './MainContent/MainContent';
 import styles from './User.css';
 
 class User extends Component {
-    render() { 
-        return ( 
+    render() {
+        return (
             <div className={styles.Layout}>
-                <Header className/>
-                <MainContent/>
+                <Header/>
+                <MainContent isSearch={this.props.isSearch}/>
             </div>
-         );
+        );
     }
 }
- 
+
 export default User;

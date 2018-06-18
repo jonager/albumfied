@@ -1,0 +1,21 @@
+.Sidebar {
+    background-color: black;
+    opacity: 0.9;
+    padding-left: 2.5em;
+    padding-top: 2.5em;
+}
+
+.UList li{
+    display: block;
+    color: white;
+    margin-bottom: 2.5em;
+    font-size: 2em;
+    opacity: 0.6;
+}
+
+.UList li a{
+    color: white;
+    text-decoration: none;
+    margin-left: 1em;
+}
+

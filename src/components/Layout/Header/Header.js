@@ -24,7 +24,6 @@ const Header = (props) => {
                 <a href="#default">AlbumFied</a>
             </div>
             <div className={styles.RightHeader}>
-                {token ? <input type="text" onKeyDown={inputChangeHandler}></input> : null}
                 <a href="https://github.com/jonager/albumfied" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
                 {!token
                     ? <Button btnType={'Login-Header'} clicked={utility.spotifyAuth}> Log In</Button>

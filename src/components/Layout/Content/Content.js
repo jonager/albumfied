@@ -1,9 +1,13 @@
 import React from 'react';
+import SearchBar from '../../UI/SearchBar/SearchBar';
 
-const Content = () => {
+const Content = (props) => {
+    console.log(props.isSearch)
     return (
-        <p>Content</p>
-    )
+        <div>
+            {props.isSearch ? <SearchBar/> : null}
+        </div>
+    );
 }
  
 export default Content;

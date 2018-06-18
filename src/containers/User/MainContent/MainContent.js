@@ -8,7 +8,7 @@ class MainContent extends Component {
         return ( 
             <div className={styles.MainContent}>
                 <Sidebar/>
-                <Content/>
+                <Content isSearch={this.props.isSearch}/>
             </div>
          );
     }
