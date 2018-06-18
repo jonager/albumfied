@@ -3,7 +3,7 @@ import styles from './SearchBar.css';
 
 const SearchBar = () => {
     return (
-        <input placeholder="Search for an Album, Artist..." type="text" autoFocus></input>
+        <input className={styles.SearchBar} placeholder="Search for an Album, Artist..." type="text" autoFocus></input>
     )
 }
  
