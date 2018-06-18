@@ -6,16 +6,16 @@ import  * as utility from '../../../shared/utility';
 
 const Header = (props) => {
     let token = localStorage.getItem('token');
-    let timeout = null;
+    // let timeout = null;
 
-    const inputChangeHandler = event => {
-        event.persist();
-        clearTimeout(timeout);
+    // const inputChangeHandler = event => {
+    //     event.persist();
+    //     clearTimeout(timeout);
 
-        timeout = setTimeout(function() {
-            utility.searchItem(token, event.target.value);
-        }, 2500);
-    }
+    //     timeout = setTimeout(function() {
+    //         utility.searchItem(token, event.target.value);
+    //     }, 2500);
+    // }
     
     return (
         <div className={styles.Header}>

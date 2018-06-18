@@ -7,7 +7,6 @@ import LandingPage from './components/LandingPage/LandingPage';
 import Auth from './containers/Auth/Auth';
 import User from './containers/User/User';
 import Logout from './containers/Auth/Logout/Logout';
-import Content from './components/Layout/Content/Content';
 class App extends Component {
   render() {
     return (
@@ -16,7 +15,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/callback" component={Auth} />
                     <Route path="/user" component={User} />
-                    <Route path="/search" render={() => <User isSearch = {true} />} />
+                    <Route path="/search" render={() => <User isSearch = {true}/>} />
                     <Route path="/logout" component={Logout} />
                     <Route path="/" render={(props) => <LandingPage isAuth={this.props.isAuth} />}/>
                 </Switch>
