@@ -7,7 +7,7 @@ const Sidebar = () => {
         <section className={styles.Sidebar}>
             <ul className={styles.UList}>
                 <li>
-                    <i class="fas fa-search"></i><NavLink activeStyle={{color:'#1db954'}} to="/search">Search</NavLink>
+                    <i class="fas fa-search"></i><NavLink activeStyle={{color:'#1db954', opacity:'1'}} to="/search">Search</NavLink>
                 </li>
                 <li>
                     <i class="fas fa-home"></i><NavLink activeStyle={{color:'#1db954'}} to="/user">Home</NavLink>

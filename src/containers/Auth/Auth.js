@@ -16,7 +16,7 @@ class Auth extends Component {
 
     render() { 
         return (
-            <Redirect to="/user" />
+            <Redirect to="/home" />
         );
     }
 }
