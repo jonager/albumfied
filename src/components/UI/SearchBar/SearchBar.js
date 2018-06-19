@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './SearchBar.css';
 
-const SearchBar = () => {
+const SearchBar = (props) => {
     return (
-        <input className={styles.SearchBar} placeholder="Search for an Album, Artist..." type="text" autoFocus></input>
+        <input className={styles.SearchBar} onKeyUp={props.inputHandler} placeholder="Search for an Album, Artist..." type="text" autoFocus></input>
     )
 }
  

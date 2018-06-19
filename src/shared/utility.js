@@ -31,8 +31,7 @@ export const getAlbums = (token) => {
         });
 };
 
-export const searchItem = (token, searchQuery) => {
-    console.log(searchQuery)
+export const searchItem = (token, searchQuery, state) => {
     axios({
         method:'get',
         url:'https://api.spotify.com/v1/search',
@@ -47,7 +46,7 @@ export const searchItem = (token, searchQuery) => {
             market: 'US'
         }})
         .then( (response) => {
-            console.log(response.data);
+            console.log(state)
         })
         .catch((error) => {
             console.log(error);

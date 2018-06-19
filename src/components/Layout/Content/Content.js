@@ -1,11 +1,11 @@
 import React from 'react';
-import SearchBar from '../../UI/SearchBar/SearchBar';
+import Search from '../../../containers/Search/Search';
 import styles from './Content.css';
 
 const Content = (props) => {
     return (
         <div className={styles.Content}>
-            {props.isSearch ? <SearchBar/> : null}
+            {props.isSearch ? <Search/> : null}
         </div>
     );
 }

@@ -7,13 +7,13 @@ const Sidebar = () => {
         <section className={styles.Sidebar}>
             <ul className={styles.UList}>
                 <li>
-                    <i class="fas fa-search"></i><NavLink activeStyle={{color:'#1db954', opacity:'1'}} to="/search">Search</NavLink>
+                    <i className="fas fa-search"></i><NavLink activeStyle={{color:'#1db954'}} to="/search">Search</NavLink>
                 </li>
                 <li>
-                    <i class="fas fa-home"></i><NavLink activeStyle={{color:'#1db954'}} to="/user">Home</NavLink>
+                    <i className="fas fa-home"></i><NavLink activeStyle={{color:'#1db954'}} to="/home">Home</NavLink>
                 </li>
                 <li>
-                    <i class="fas fa-bars"></i><NavLink activeStyle={{color:'#1db954'}} to="/library">Your Music</NavLink>
+                    <i className="fas fa-bars"></i><NavLink activeStyle={{color:'#1db954'}} to="/library">Your Music</NavLink>
                 </li>
             </ul>
         </section>
