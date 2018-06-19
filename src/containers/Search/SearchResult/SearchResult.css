@@ -1,0 +1,23 @@
+.SearchResult {
+    padding: 2em;
+}
+
+.SearchResultLinks {
+    text-align: center;
+}
+
+.SearchResultLinks a {
+    text-decoration: none;
+    color: white;
+    font-size: 3em;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    margin-right: 100px;
+    opacity: 0.7;
+    padding: 0 1em;
+}
+
+.SearchResultLinks a:hover {
+    opacity: 0.95; 
+    border-bottom: #7DCE82 4px inset;
+}

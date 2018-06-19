@@ -47,7 +47,6 @@ class Search extends Component {
         }, 1500);
     };
 
-    
     render() { 
         return (
             <React.Fragment>
