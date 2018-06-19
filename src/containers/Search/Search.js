@@ -6,12 +6,13 @@ import axios from 'axios';
 class Search extends Component {
     state = {
         token: localStorage.getItem('token'),
-        response: null
+        results: null
     }
 
     static timeout = null
     
     searchItem = (token, searchQuery) => {
+        console.log(searchQuery)
         axios({
             method:'get',
             url:'https://api.spotify.com/v1/search',
@@ -27,6 +28,9 @@ class Search extends Component {
             }})
             .then( (response) => {
                 console.log(response)
+                this.setState({
+                    results: response.data
+                })
             })
             .catch((error) => {
                 console.log(error);
@@ -40,7 +44,7 @@ class Search extends Component {
 
         Search.timeout = setTimeout(() => {
             this.searchItem(token, event.target.value);
-        }, 2500);
+        }, 1500);
     };
 
     
@@ -48,7 +52,7 @@ class Search extends Component {
         return (
             <React.Fragment>
                 <SearchBar inputHandler={this.inputChangeHandler}/>
-                <SearchResult/>
+                {this.state.results ? <SearchResult results={this.state.results}/> : null}
             </React.Fragment>
 
         );
