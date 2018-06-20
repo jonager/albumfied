@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter} from 'react-router-dom';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import LandingPage from './components/LandingPage/LandingPage';
@@ -31,4 +31,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));
