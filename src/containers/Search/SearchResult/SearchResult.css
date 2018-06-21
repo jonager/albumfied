@@ -19,5 +19,8 @@
 
 .SearchResultLinks a:hover {
     opacity: 0.95; 
-    border-bottom: #7DCE82 4px inset;
+}
+
+.SearchResultLinks a.my-active {
+    color: green;
 }
