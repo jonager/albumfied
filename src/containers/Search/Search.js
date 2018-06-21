@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import SearchResult from './SearchResult/SearchResult';
 import axios from 'axios';
@@ -12,7 +13,6 @@ class Search extends Component {
     static timeout = null
     
     searchItem = (token, searchQuery) => {
-        console.log(searchQuery)
         axios({
             method:'get',
             url:'https://api.spotify.com/v1/search',
@@ -27,10 +27,12 @@ class Search extends Component {
                 market: 'US'
             }})
             .then( (response) => {
-                console.log(response)
                 this.setState({
                     results: response.data
-                })
+                });
+                this.props.history.push({
+                    pathname: '/search/artists'
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -58,4 +60,4 @@ class Search extends Component {
     }
 }
  
-export default Search;
+export default withRouter(Search);
