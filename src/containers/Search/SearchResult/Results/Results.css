@@ -1,17 +1,18 @@
-.Info {
+.Card, .Info {
     text-align: center;
 }
 
-.Card h3 {
+.Info h3 {
     color: white;
     font-weight: bold;
     margin-top: 12px;
     margin-bottom: 12px;
-    font-size: 1.2em;
+    font-size: 1.4em;
     letter-spacing: 0.03em;
 }
 
-.Card a {
+.Info a {
+    font-size: 1.2em;
     text-decoration: none;
     color: white;
     opacity: 0.6;
