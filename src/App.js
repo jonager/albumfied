@@ -1,32 +1,51 @@
 import React, { Component } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter,Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styles from './App.css';
 
+import Layout from './hoc/Layout/Layout';
 import LandingPage from './components/LandingPage/LandingPage';
 import Auth from './containers/Auth/Auth';
-import Home from './containers/Home/Home';
+import Content from './components/LayoutUnits/Content/Content';
 import Logout from './containers/Auth/Logout/Logout';
 class App extends Component {
-  render() {
-    return (
-            <div className="App">
+    render() {
+        let routes = (
+            <Switch>
+              <Route path="/callback" component={Auth} />
+              <Route path="/" exact component={LandingPage} />
+              <Redirect to="/" s/>
+            </Switch>
+          );
+
+        if ( this.props.isAuth ) {
+            routes = (
                 <Switch>
-                    <Route path="/callback" component={Auth} />
-                    <Route path="/home" component={Home} />
-                    <Route path="/search" render={() => <Home isSearch = {true}/>} />
+                    <Route path="/search" render={() => <Content isSearch = {true}/>} />
+                    <Route path="/home" render={() => <Content isHome = {true}/>} />
+                    <Route path="/library" render={() => <Content isLibrary = {true}/>} />
+                    
+                    {/* <Route path="/library" component={Library} /> */}
                     {/* <Route path="/libray" render={() => <Home isSearch = {true}/>} /> */}
                     <Route path="/logout" component={Logout} />
-                    <Route path="/" render={(props) => <LandingPage isAuth={this.props.isAuth} />}/>
                 </Switch>
+            );
+        }
+
+        return (
+            <div className={styles.App}>
+                <Layout isAuth={this.props.isAuth}>
+                    {routes}
+                </Layout>
             </div>
-    );
-  }
-}
+        );
+    };
+};
 
 const mapStateToProps = state => {
     return {
         isAuth: state.auth.isAuth
     }
-}
+};
 
 export default withRouter(connect(mapStateToProps)(App));

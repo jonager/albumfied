@@ -4,11 +4,11 @@ import styles from './Header.css';
 import Button from '../../UI/Button/Button';
 import  * as utility from '../../../shared/utility';
 
-const Header = (props) => {
+const Header = () => {
     let token = localStorage.getItem('token');
     
     return (
-        <div className={styles.Header}>
+        <header className={styles.Header}>
             <div className={styles.LeftHeader}>
                 <i className="fas fa-compact-disc"></i>
                 <Link to="/home">AlbumFied</Link>
@@ -19,7 +19,7 @@ const Header = (props) => {
                     ? <Button btnType={'Login-Header'} clicked={utility.spotifyAuth}> Log In</Button>
                     : <NavLink className={styles.LeftHeader} to="/logout">Logout</NavLink>}
             </div>
-        </div>
+        </header>
     );
 }
  

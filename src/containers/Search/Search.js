@@ -51,10 +51,10 @@ class Search extends Component {
 
     render() { 
         return (
-            <React.Fragment>
+            <div>
                 <SearchBar inputHandler={this.inputChangeHandler}/>
                 {this.state.results ? <SearchResult results={this.state.results}/> : null}
-            </React.Fragment>
+            </div>
 
         );
     }

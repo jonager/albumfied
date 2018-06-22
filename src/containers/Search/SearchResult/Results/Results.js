@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const Results = (props) => {
     // TODO: debug why component renders twice
     let card = props.results.items.map(item => {
+        console.log(item)
             return (
                 <div key={item.id} className={styles.Card}>
                     {item.images.length !== 0 
@@ -17,7 +18,7 @@ const Results = (props) => {
                             alt="Placeholder, not artist picture available"/>}
                     <div className={styles.Info}>
                         <h3>{item.name}</h3> 
-                        {item.artists ? <Link to="/" title={item.artists[0].name}>{item.artists[0].name}</Link> : null}
+                        {item.artists ? <Link to={'/artist/' + item.artists[0].id} title={item.artists[0].name}>{item.artists[0].name}</Link> : null}
                     </div>
                 </div>
             );

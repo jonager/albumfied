@@ -1,13 +1,11 @@
 import React from 'react';
 import Button from '../UI/Button/Button';
 import * as utility from '../../shared/utility';
-import Header from '../Layout/Header/Header';
 import styles from './LandingPage.css';
 
-const LandingPage = (props) => {
+const LandingPage = () => {
     return (
         <div>
-            <Header isAuth={props.isAuth}/>
             <div className={styles.Hero}>
                 <div className={styles.HeroContent}>
                     <h1>Welcome to AlbumFied!</h1>
