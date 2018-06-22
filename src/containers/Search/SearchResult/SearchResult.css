@@ -1,9 +1,13 @@
 .SearchResult {
     padding: 2em;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 1fr;
 }
 
 .SearchResultLinks {
     text-align: center;
+    margin-bottom: 3em;
 }
 
 .SearchResultLinks a {
@@ -23,4 +27,11 @@
 
 .SearchResultLinks a.my-active {
     color: green;
+}
+
+.Cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    justify-items: center;
+    grid-row-gap: 3em;
 }

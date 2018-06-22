@@ -11,9 +11,10 @@ const SearchResult = (props) => {
                 <NavLink activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}} to="/search/artists">Artists</NavLink>
                 <NavLink activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}}  to="/search/albums">Albums</NavLink>
             </div>
-            
-            <Route path="/search/artists" render={() =>  <Results results={props.results.artists} />} />
-            <Route path="/search/albums" render={() => <Results results={props.results.albums} />} />
+            <div className={styles.Cards}>
+                <Route path="/search/artists" render={() =>  <Results results={props.results.artists} />} />
+                <Route path="/search/albums" render={() => <Results results={props.results.albums} />} />
+            </div>
         </div>
     );
 }
