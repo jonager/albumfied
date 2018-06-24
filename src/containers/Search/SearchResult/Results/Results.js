@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from './Results.css';
-import { Link } from 'react-router-dom'; 
+import { NavLink } from 'react-router-dom'; 
 
 
 const Results = (props) => {
     // TODO: debug why component renders twice
+    console.log(props.results.items)
     let card = props.results.items.map(item => {
-        console.log(item)
             return (
                 <div key={item.id} className={styles.Card}>
                     {item.images.length !== 0 
@@ -17,8 +17,12 @@ const Results = (props) => {
                             src="https://imgplaceholder.com/225x225/75a016/d8db26?text=picture+unavailable&font-size=20" 
                             alt="Placeholder, not artist picture available"/>}
                     <div className={styles.Info}>
-                        <h3>{item.name}</h3> 
-                        {item.artists ? <Link to={'/artist/' + item.artists[0].id} title={item.artists[0].name}>{item.artists[0].name}</Link> : null}
+                        {item.type === 'artist' 
+                            ? <NavLink to={'/artist/' + item.id} title={item.name}>{item.name}</NavLink> 
+                            : <NavLink to={'/album/' + item.id} title={item.name}>{item.name}</NavLink>}
+                        {item.type === 'album' 
+                            ? <NavLink to={'/artist/' + item.artists[0].id} title={item.artists[0].name}>{item.artists[0].name}</NavLink> 
+                            : null}
                     </div>
                 </div>
             );

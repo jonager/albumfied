@@ -46,7 +46,7 @@ class Search extends Component {
 
         Search.timeout = setTimeout(() => {
             this.searchItem(token, event.target.value);
-        }, 1500);
+        }, 1000);
     };
 
     render() { 
