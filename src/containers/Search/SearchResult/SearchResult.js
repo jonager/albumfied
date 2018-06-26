@@ -3,7 +3,6 @@ import styles from './SearchResult.css';
 import { NavLink, Route } from 'react-router-dom'; 
 import Results from './Results/Results';
 
-
 const SearchResult = (props) => {
     return (
         <div className={styles.SearchResult}>
