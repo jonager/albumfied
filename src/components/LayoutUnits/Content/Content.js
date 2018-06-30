@@ -5,6 +5,7 @@ import SideBar from '../Sidebar/Sidebar';
 import Search from '../../../containers/Search/Search';
 import Home from '../../../containers/Home/Home';
 import Library from '../../../containers/Library/Library';
+import Artist from '../../../containers/Artist/Artist'
 
 const Content = (props) => {
     return (
@@ -13,6 +14,7 @@ const Content = (props) => {
             {props.isSearch ? <Search/> : null}
             {props.isHome ? <Home/> : null}
             {props.isLibray ? <Library/> : null}
+            {props.isArtist ? <Artist token={props.token}/> : null}
         </div>
     );
 }

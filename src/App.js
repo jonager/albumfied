@@ -8,7 +8,7 @@ import LandingPage from './components/LandingPage/LandingPage';
 import Auth from './containers/Auth/Auth';
 import Content from './components/LayoutUnits/Content/Content';
 import Logout from './containers/Auth/Logout/Logout';
-import Artist from './containers/Artist/Artist';
+
 class App extends Component {
     render() {
         let routes = (
@@ -26,7 +26,7 @@ class App extends Component {
                     <Route path="/home" render={() => <Content isHome = {true}/>} />
                     <Route path="/library" render={() => <Content isLibrary = {true}/>} />
                     
-                    <Route path="/artist/:id" render={() => <Artist token = {this.props.token}/>} />
+                    <Route path="/artist/:id" render={() => <Content isArtist={true} token = {this.props.token}/>} />
                     {/* <Route path="/libray" render={() => <Home isSearch = {true}/>} /> */}
                     <Route path="/logout" component={Logout} />
                 </Switch>

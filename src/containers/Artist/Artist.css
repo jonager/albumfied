@@ -1,0 +1,43 @@
+.Artist {
+    padding: 2em;
+    background-color: #1E1E1E;
+}
+
+.Artist h2 {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 3em;
+    margin-bottom: 25px;
+}
+
+.ArtistInfo {
+    padding: 3em 0;
+}
+
+.ArtistInfo h1 {
+    color: white;
+    font-size: 5em; 
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+}
+
+.ArtistInfo p {
+    text-align: center;
+    color: white;
+    font-size: 1.4em;
+    opacity: 0.4;
+    margin-bottom: 3em;
+}
+
+.Cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* justify-items: center; */
+    grid-row-gap: 3em;
+}
+
+.FirstCard {
+    margin-bottom: 3em;
+}

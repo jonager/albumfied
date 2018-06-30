@@ -53,7 +53,11 @@ class Search extends Component {
         return (
             <div>
                 <SearchBar inputHandler={this.inputChangeHandler}/>
-                {this.state.results ? <SearchResult results={this.state.results}/> : null}
+                {this.state.results 
+                    ?<SearchResult 
+                        albums={this.state.results.albums.items}
+                        artists={this.state.results.artists.items}/> 
+                    : null}
             </div>
 
         );

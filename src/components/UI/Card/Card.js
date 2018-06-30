@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './Card.css';
 import { Link } from 'react-router-dom'; 
+import styles from './Card.css';
 
 const Card = (props) => {
-    let card = props.results.items.map(item => {
+    let card = props.results.map(item => {
         return (
             <div key={item.id} className={styles.Card}>
                 {item.images.length !== 0 
