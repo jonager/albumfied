@@ -12,7 +12,7 @@ const Content = (props) => {
         <div className={styles.Content}>
             <SideBar/> 
             {props.isSearch ? <Search/> : null}
-            {props.isHome ? <Home/> : null}
+            {props.isHome ? <Home token={props.token}/> : null}
             {props.isLibray ? <Library/> : null}
             {props.isArtist ? <Artist token={props.token}/> : null}
         </div>

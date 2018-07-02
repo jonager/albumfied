@@ -1,0 +1,19 @@
+.Home {
+    background-color: #1E1E1E;
+    padding: 2em;
+}
+
+.Home h1 {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 3em;
+    margin-bottom: 50px;
+}
+
+.Cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* justify-items: center; */
+    grid-row-gap: 4em;
+}
