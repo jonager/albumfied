@@ -11,6 +11,14 @@ class Artist extends Component {
         albums: null
     }
 
+    apiCalls = () => {
+        let artistId = this.props.match.params.id;
+        let token = this.props.token;
+        this.getAlbums(artistId, token);
+        this.getRelatedArtist(artistId, token);
+        this.getArtist(artistId, token);
+    }
+
     getArtist = (artistId, token) => {
         axios({
             method:'get',
@@ -29,27 +37,8 @@ class Artist extends Component {
             .catch((error) => {
                 console.log(error);
             });
-    };
-
-    getRelatedArtist = (artistId, token) => {
-        axios({
-            method:'get',
-            url:`https://api.spotify.com/v1/artists/${artistId}/related-artists`,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            }})
-            .then( (response) => {
-                this.setState({
-                    relatedArtists: response.data
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
-
+        };
+        
     getAlbums = (artistId, token) => {
         axios({
             method: 'get',
@@ -74,13 +63,34 @@ class Artist extends Component {
             console.log(error);
         });
     };
+    
+    getRelatedArtist = (artistId, token) => {
+        axios({
+            method:'get',
+            url:`https://api.spotify.com/v1/artists/${artistId}/related-artists`,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }})
+            .then( (response) => {
+                this.setState({
+                    relatedArtists: response.data
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     componentDidMount() {
-        let artistId = this.props.match.params.id;
-        let token = this.props.token;
-        this.getAlbums(artistId, token);
-        this.getRelatedArtist(artistId, token);
-        this.getArtist(artistId, token);
+        this.apiCalls();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.props.match.params.id !== prevProps.match.params.id){
+            this.apiCalls();
+        }
     }
 
     render() {
@@ -91,13 +101,8 @@ class Artist extends Component {
             artistFollowers= <p>{`Followers: ${this.state.artist.followers.total.toLocaleString('en')}`}</p>;
         }
 
-        if (this.state.albums) {
-            albumsCard = <Card results={this.state.albums.items} />
-        }
-        
-        if (this.state.relatedArtists) {
-            relatedArtistsCard = <Card results={this.state.relatedArtists.artists} />
-        }
+        albumsCard = this.state.albums ? <Card results={this.state.albums.items} /> : null;
+        relatedArtistsCard = this.state.relatedArtists ? <Card results={this.state.relatedArtists.artists} /> : null;
 
         return (
             <div className={styles.Artist}>
