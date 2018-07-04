@@ -24,7 +24,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/search" render={() => <Content isSearch = {true}/>} />
                     <Route path="/home" render={() => <Content isHome = {true} token = {this.props.token} />}  />
-                    <Route path="/library" render={() => <Content isLibrary = {true}/>} />
+                    <Route path="/library" render={() => <Content isLibrary = {true} token = {this.props.token} />} />
                     
                     <Route path="/artist/:id" render={() => <Content isArtist={true} token = {this.props.token}/>} />
                     {/* <Route path="/libray" render={() => <Home isSearch = {true}/>} /> */}

@@ -4,7 +4,7 @@ import Card from '../../../../components/UI/Card/Card';
 const Results = (props) => {
     // TODO: debug why component renders twice
     return (
-            <Card results = {props.results} />
+            <Card totalAlbums = {props.totalAlbums} results = {props.results} />
     );
 }
  

@@ -1,0 +1,38 @@
+.Library {
+    padding: 2em;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 1fr;
+    background-color: #1E1E1E;
+}
+
+.LibraryLinks {
+    text-align: center;
+    margin-bottom: 3em;
+}
+
+.LibraryLinks a {
+    text-decoration: none;
+    color: white;
+    font-size: 3em;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+    margin-right: 100px;
+    opacity: 0.7;
+    padding: 0 1em;
+}
+
+.LibraryLinks a:hover {
+    opacity: 0.95; 
+}
+
+.LibraryLinks a.my-active {
+    color: green;
+}
+
+.Cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* justify-items: center; */
+    grid-row-gap: 3em;
+}

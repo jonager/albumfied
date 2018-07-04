@@ -4,6 +4,7 @@ import styles from './Card.css';
 
 const Card = (props) => {
     let card = props.results.map(item => {
+        item = props.totalAlbums ? item.album : item;
         return (
             <div key={item.id} className={styles.Card}>
                 {item.images.length !== 0 
