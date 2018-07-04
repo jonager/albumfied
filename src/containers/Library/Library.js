@@ -3,7 +3,6 @@ import { NavLink, Route } from 'react-router-dom';
 import Card from '../../components/UI/Card/Card';
 import styles from './Library.css';
 import axios from 'axios';
-import Results from '../Search/SearchResult/Results/Results';
 class Library extends Component {
     state = {
         totalAlbums: null
@@ -40,19 +39,10 @@ class Library extends Component {
     }
 
     render() {
-        // let totalAlbums = null;
-        // totalAlbums = this.state.totalAlbums ? <Card totalAlbums={true} results={this.state.totalAlbums.items} /> : null;
-
         let totalAlbums = null;
         totalAlbums = this.state.totalAlbums ? this.state.totalAlbums.items: null;
 
         return (
-            // <div className={styles.Library}>
-            //     <h1>My Albums</h1>
-            //     <div className={styles.Cards}>
-            //         {totalAlbums}    
-            //     </div>
-            // </div>
             <div className={styles.Library}>
                 <div  className={styles.LibraryLinks}>
                     <NavLink activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}} to="/library">My Albums</NavLink>
@@ -62,7 +52,7 @@ class Library extends Component {
                     {this.state.totalAlbums 
                         ? <Route path="/library" render={() =>  <Card totalAlbums={true} results={totalAlbums} />}/> 
                         : null}
-                    <Route path="/library/playlists" render={() => <Results />} />d
+                    <Route path="/library/playlists" render={() => <Card />} />d
                 </div>
             </div>
         );
