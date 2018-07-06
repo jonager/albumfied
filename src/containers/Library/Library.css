@@ -6,6 +6,13 @@
     background-color: #1E1E1E;
 }
 
+.Library h1 {
+    font-weight: bold;
+    font-size: 5em;
+    letter-spacing: 0.2px;
+    margin-bottom: 1em;
+}
+
 .LibraryLinks {
     text-align: center;
     margin-bottom: 3em;
@@ -35,4 +42,21 @@
     grid-template-columns: repeat(6, 1fr);
     /* justify-items: center; */
     grid-row-gap: 3em;
+}
+
+.PlaylistInput {
+    width: 100%;
+    padding: .5em;
+    font-size: 5em;
+    background-color: #282828;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    color: white;
+    caret-color: #1db954;
+    margin-bottom: 0.5em;
+}
+
+.PlaylistInput::placeholder {
+    font-size: 1em;
 }

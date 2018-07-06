@@ -15,7 +15,7 @@ class App extends Component {
             <Switch>
               <Route path="/callback" component={Auth} />
               <Route path="/" exact component={LandingPage} />
-              <Redirect to="/" s/>
+              <Redirect to="/" />
             </Switch>
           );
 

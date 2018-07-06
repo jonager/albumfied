@@ -42,6 +42,22 @@
     background-color: white;
 }
 
+.PlaylistCancel {
+    border: white solid 2px;
+    background-color: #1E1E1E;
+    opacity: 0.9;
+    color: white;
+    border-radius: 22px;
+    width: 8em;
+    font-size: 1.5em;
+}
+
+.PlaylistCancel:hover {
+    background-color: white;
+    color: black;
+    opacity: 1;
+}
+
 .Login:hover {
     background-color: #1ed760;
 }

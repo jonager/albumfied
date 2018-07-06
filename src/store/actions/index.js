@@ -3,3 +3,7 @@ export {
     getUserId,
     userLogout
 } from './auth';
+
+export {
+    setPlaylistName
+} from './library';
