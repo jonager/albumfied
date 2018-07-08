@@ -2,8 +2,9 @@
     padding: 2em;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 1fr;
+    grid-template-rows: 5em auto;
     background-color: #1E1E1E;
+    grid-row-gap: 3em;
 }
 
 .Library h1 {
@@ -15,7 +16,6 @@
 
 .LibraryLinks {
     text-align: center;
-    margin-bottom: 3em;
 }
 
 .LibraryLinks a {
@@ -40,7 +40,7 @@
 .Cards {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    /* justify-items: center; */
+    justify-items: center;
     grid-row-gap: 3em;
 }
 

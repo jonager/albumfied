@@ -1,0 +1,23 @@
+.Card {
+    text-align: center;
+    color: white;
+}
+
+.Card h2 {
+    font-size: 1.4em;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+}
+
+.PlalistImg {
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.PlalistImg i {
+    font-size: 3em;
+    opacity: 1;
+}

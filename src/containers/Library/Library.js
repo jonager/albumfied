@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { NavLink, Route } from 'react-router-dom'; 
+import { NavLink, Route, withRouter } from 'react-router-dom'; 
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import fire from '../../fire';
+
 
 import Card from '../../components/UI/Card/Card';
 import styles from './Library.css';
@@ -58,6 +59,9 @@ class Library extends Component {
             this.setState({
                 totalAlbums: response.data
             })
+            this.props.history.push({
+                pathname: '/library/albums'
+            });
         })
         .catch((error) => {
             console.log(error);
@@ -98,7 +102,7 @@ class Library extends Component {
                 <div  className={styles.LibraryLinks}>
                     <NavLink 
                         activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}} 
-                        to="/library">My Albums</NavLink>
+                        to="/library/albums">My Albums</NavLink>
                     <NavLink 
                         activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}}  
                         to="/library/playlists">Playlists</NavLink>
@@ -111,10 +115,9 @@ class Library extends Component {
                 <div className={styles.Cards}>
                     <Route path="/library/playlists" render={() => <Playlists />} />
                     {this.state.totalAlbums 
-                        ? <Route path="/library" render={() =>  <Card totalAlbums={true} results={totalAlbums} />}/> 
+                        ? <Route  path="/library/albums" render={() =>  <Card totalAlbums={true} results={totalAlbums} />}/> 
                         : null}
                 </div>
-
                 <Modal show={this.state.show} clicked={this.hideModal}>
                     <h1>Create new playlist</h1>
                     <input className={styles.PlaylistInput} 
@@ -144,4 +147,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Library);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Library));

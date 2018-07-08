@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import fire from '../../../fire';
+import styles from './Playlists.css';
 
 class Playlists extends Component {
     state = {
         playlists: null
     }
 
-    getAlbumsFirebase = (userid) => {
+    getPlaylistsFirebase = (userid) => {
         let ref = fire.database().ref(`users/${userid}/playlists`);
-        ref.on('value', function(snapshot){
+        ref.on('value', (snapshot) => {
             this.setState({
                 playlists: snapshot.val()
             })
@@ -16,12 +17,24 @@ class Playlists extends Component {
     }
 
     componentDidMount() {
-        this.getAlbumsFirebase('jagn29')
+        this.getPlaylistsFirebase('jagn29');
     }
 
     render() { 
-        console.log(this.state.playlists)
-        return ( <p>ho</p> )
+        let playlists = null;
+        if(this.state.playlists) {
+            playlists = Object.keys(this.state.playlists).map(playlist => {
+                return (
+                    <div className={styles.Card}>
+                        <div className={styles.PlalistImg} style={{width:'225px', height:'225px'}}>
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <h2>{playlist}</h2>
+                    </div>
+                )
+            })
+        }
+        return ( playlists )
     }
 }
  
