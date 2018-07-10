@@ -5,5 +5,6 @@ export {
 } from './auth';
 
 export {
+    setTotalAlbums,
     setPlaylistName
 } from './library';

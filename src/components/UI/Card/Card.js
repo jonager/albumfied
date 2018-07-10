@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
 import styles from './Card.css';
+import Button from '../Button/Button';
+import * as utility from '../../../shared/utility';
 
 const Card = (props) => {
     let card = props.results.map(item => {
@@ -20,6 +22,12 @@ const Card = (props) => {
                         : <Link to={'/album/' + item.id} title={item.name}>{item.name}</Link>}
                     {item.type === 'album' 
                         ? <Link to={'/artist/' + item.artists[0].id} title={item.artists[0].name}>{item.artists[0].name}</Link> 
+                        : null}
+                    {props.save 
+                        ? <Button btnType={'Save'} clicked={() => utility.saveAlbumSpotify(localStorage.getItem('token'), item.id)}>Save</Button>
+                        : null}
+                    {props.delete 
+                        ? <Button btnType={'Delete'} clicked={() => props.clicked(props.token, item.id)}>Delete</Button>
                         : null}
                 </div>
             </div>

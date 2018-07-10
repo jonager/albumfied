@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { NavLink, Route, withRouter } from 'react-router-dom'; 
 import axios from 'axios';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions/index';
 import fire from '../../fire';
-
+import * as actions from '../../store/actions/index';
 
 import Card from '../../components/UI/Card/Card';
 import styles from './Library.css';
@@ -14,7 +13,6 @@ import Playlists from './Playlists/Playlists';
 
 class Library extends Component {
     state = {
-        totalAlbums: null,
         show: false
     }
 
@@ -40,7 +38,7 @@ class Library extends Component {
         }
     };
 
-    getAlbums = (token) => {
+    getAlbumsSpotify = (token) => {
         axios({
             method: 'get',
             url: `https://api.spotify.com/v1/me/albums`,
@@ -56,9 +54,7 @@ class Library extends Component {
             }
         })
         .then((response) => {
-            this.setState({
-                totalAlbums: response.data
-            })
+            this.props.onSetTotalAlbums(response.data);
             this.props.history.push({
                 pathname: '/library/albums'
             });
@@ -66,6 +62,24 @@ class Library extends Component {
         .catch((error) => {
             console.log(error);
         });
+    };
+
+    deleteAlbumSpotify = (token, albumId) => {
+        axios({
+            method: 'delete',
+            url: `https://api.spotify.com/v1/me/albums`,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            params: {
+                ids: albumId
+            }
+        })
+        .then(() => {
+            this.getAlbumsSpotify(this.props.token)
+        })
     };
 
     addPlaylistFirebase = (userId, playlistName) => {
@@ -76,7 +90,9 @@ class Library extends Component {
 
     // addAlbumFirebase = (userId, playlistName, album) => {
     //     fire.database().ref(`users/${userId}/playlists/${playlistName}`).push({
-    //         name: album
+    //         name: album,
+    //         artist: artist,
+    //         albumId: albumId
     //     });
     // };
 
@@ -89,13 +105,12 @@ class Library extends Component {
 
     componentDidMount() {
         let token = this.props.token;
-        this.getAlbums(token);
+        this.getAlbumsSpotify(token);
     }
-
+   
     render() {
-        console.log(this.state.show)
         let totalAlbums = null;
-        totalAlbums = this.state.totalAlbums ? this.state.totalAlbums.items: null;
+        totalAlbums = this.props.totalAlbums ? this.props.totalAlbums.items: null;
 
         return (
             <div className={styles.Library}>
@@ -114,8 +129,14 @@ class Library extends Component {
 
                 <div className={styles.Cards}>
                     <Route path="/library/playlists" render={() => <Playlists />} />
-                    {this.state.totalAlbums 
-                        ? <Route  path="/library/albums" render={() =>  <Card totalAlbums={true} results={totalAlbums} />}/> 
+                    {this.props.totalAlbums 
+                        ? <Route  path="/library/albums" render={() =>  
+                            <Card 
+                                totalAlbums={true} 
+                                clicked={this.deleteAlbumSpotify} 
+                                token={this.props.token} 
+                                delete={true} 
+                                results={totalAlbums} />}/> 
                         : null}
                 </div>
                 <Modal show={this.state.show} clicked={this.hideModal}>
@@ -136,15 +157,16 @@ class Library extends Component {
 
 const mapStateToProps = state => {
     return {
-        userId: state.auth.userId
+        userId: state.auth.userId,
+        token: state.auth.spotifyToken,
+        totalAlbums: state.library.totalAlbums
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetPlaylistName: (libraryName) => dispatch(actions.setPlaylistName(libraryName))
+        onSetTotalAlbums: (totalAlbums) => dispatch(actions.setTotalAlbums(totalAlbums))
     };
 };
-
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Library));

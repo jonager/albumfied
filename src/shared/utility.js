@@ -13,42 +13,17 @@ export const parseParam = (hash, param) => {
     return value;
 };
 
-export const getAlbums = (token) => {
-    console.log(token)
+export const saveAlbumSpotify = (token, albumId) => {
     axios({
-        method:'get',
-        url:'https://api.spotify.com/v1/me/albums',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }})
-        .then( (response) => {
-            console.log(response.data.items);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
-export const searchItem = (token, searchQuery, state) => {
-    axios({
-        method:'get',
-        url:'https://api.spotify.com/v1/search',
+        method: 'put',
+        url: `https://api.spotify.com/v1/me/albums`,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         },
         params: {
-            q: `${searchQuery}`,
-            type: 'album,artist',
-            market: 'US'
-        }})
-        .then( (response) => {
-            console.log(state)
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            ids: albumId
+        }
+    })
 };

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import fire from '../../../fire';
 import styles from './Playlists.css';
+import * as actions from '../../../store/actions/index';
+
+
 
 class Playlists extends Component {
     state = {
@@ -10,9 +14,7 @@ class Playlists extends Component {
     getPlaylistsFirebase = (userid) => {
         let ref = fire.database().ref(`users/${userid}/playlists`);
         ref.on('value', (snapshot) => {
-            this.setState({
-                playlists: snapshot.val()
-            })
+            this.props.onSetPlaylistName(snapshot.val())
         })
     }
 
@@ -22,12 +24,12 @@ class Playlists extends Component {
 
     render() { 
         let playlists = null;
-        if(this.state.playlists) {
-            playlists = Object.keys(this.state.playlists).map(playlist => {
+        if(this.props.playlists) {
+            playlists = Object.keys(this.props.playlists).map(playlist => {
                 return (
                     <div className={styles.Card}>
                         <div className={styles.PlalistImg} style={{width:'225px', height:'225px'}}>
-                            <i class="fas fa-music"></i>
+                            <i className="fas fa-music"></i>
                         </div>
                         <h2>{playlist}</h2>
                     </div>
@@ -37,5 +39,17 @@ class Playlists extends Component {
         return ( playlists )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        playlists: state.library.playlists
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetPlaylistName: (playlists) => dispatch(actions.setPlaylistName(playlists))
+    };
+};
  
-export default Playlists;
+export default connect(mapStateToProps, mapDispatchToProps)(Playlists);

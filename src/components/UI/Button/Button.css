@@ -15,6 +15,10 @@
     border-radius: 25px;
 }
 
+.Login:hover {
+    background-color: #1ed760;
+}
+
 .Login-Header {
     color: white;
     background-color: #1db954;
@@ -25,7 +29,6 @@
     font-size: 20px;
     border-radius: 22px;
 }
-
 
 .Login-Hero {
     color: white;
@@ -58,7 +61,21 @@
     opacity: 1;
 }
 
-.Login:hover {
-    background-color: #1ed760;
+.Save {
+    color: white;
+    background-color: #4298f4;
+    border-radius: 25px;
+    padding: 3px;
 }
+
+.Delete {
+    color: white;
+    background-color: red;
+    border-radius: 25px;
+    padding: 3px;
+}
+
+
+
+
 

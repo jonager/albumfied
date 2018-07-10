@@ -1,10 +1,15 @@
 import * as actionTypes from './actionTypes';
-import axios from 'axios';
-import fire from '../../fire';
 
-export const setPlaylistName = (libraryName) => {    
+export const setTotalAlbums = (totalAlbums) => {    
+    return {
+        type: actionTypes.SET_TOTAL_ALBUMS,
+        totalAlbums: totalAlbums
+    };
+};
+
+export const setPlaylistName = (playlists) => {    
     return {
         type: actionTypes.SET_PLAYLIST_NAME,
-        libraryName: libraryName
+        playlists: playlists
     };
 };
