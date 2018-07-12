@@ -5,6 +5,7 @@
     grid-template-rows: 5em auto;
     background-color: #1E1E1E;
     grid-row-gap: 3em;
+    z-index: 10;
 }
 
 .Library h1 {
@@ -59,4 +60,9 @@
 
 .PlaylistInput::placeholder {
     font-size: 1em;
+}
+
+.PlalistImg {
+    background: #282828;
+    margin-bottom: 1em;
 }

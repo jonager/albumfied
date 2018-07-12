@@ -4,12 +4,7 @@ import fire from '../../../fire';
 import styles from './Playlists.css';
 import * as actions from '../../../store/actions/index';
 
-
-
 class Playlists extends Component {
-    state = {
-        playlists: null
-    }
 
     getPlaylistsFirebase = (userid) => {
         let ref = fire.database().ref(`users/${userid}/playlists`);

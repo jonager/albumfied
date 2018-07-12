@@ -13,26 +13,27 @@ import Playlists from './Playlists/Playlists';
 
 class Library extends Component {
     state = {
-        show: false
+        showAdd: false,
+        showPlaylist: false
     }
 
-    showModal = () => {
+    togleModalAdd = () => {
         this.setState({
-            show: true
+            showAdd: !this.state.showAdd
         });
     }
 
-    hideModal = () => {
+    togleModalPlayist = () => {
         this.setState({
-            show: false
+            showPlaylist: !this.state.showPlaylist
         });
-    };
+    }
 
     inputHandler = (e) => {
         if(e.keyCode === 13) {
             this.addPlaylistFirebase(this.props.userId, e.target.value);
             this.setState({
-                show: false
+                showAdd: false
             });
             e.target.value = '';
         }
@@ -88,29 +89,53 @@ class Library extends Component {
         });
     };
 
-    // addAlbumFirebase = (userId, playlistName, album) => {
-    //     fire.database().ref(`users/${userId}/playlists/${playlistName}`).push({
-    //         name: album,
-    //         artist: artist,
-    //         albumId: albumId
-    //     });
-    // };
+    getPlaylistsFirebase = (userid) => {
+        let ref = fire.database().ref(`users/${userid}/playlists`);
+        ref.on('value', (snapshot) => {
+            this.props.onSetPlaylistName(snapshot.val())
+        })
+    }
 
-    // getAlbumsFirebase = (userid, playlistName) => {
-    //     let ref = fire.database().ref(`users/${userid}/playlists/${playlistName}`);
-    //     ref.on('value', function(snapshot){
-    //         console.log(snapshot.val());
-    //     })
-    // }
+    addAlbumFirebase = (userId, playlistName, albumName, artistId, albumId) => {
+        fire.database().ref(`users/${userId}/playlists/${playlistName}`).push({
+            albumName: albumName,
+            albumId: albumId,
+            artistId: artistId
+        });
+    };
+
+    getAlbumsFirebase = (userid, playlistName) => {
+        let ref = fire.database().ref(`users/${userid}/playlists/${playlistName}`);
+        ref.on('value', function(snapshot){
+            console.log(snapshot.val());
+        })
+    }
 
     componentDidMount() {
         let token = this.props.token;
         this.getAlbumsSpotify(token);
+        this.getPlaylistsFirebase(this.props.userId);
+        // this.addAlbumFirebase(this.props.userId, 'rock', 'Last Train to Lhasa', '7sP5xGJkeSPmAAcf2ufkfV', '5Z8mapYkacgBN46TkH9L3M')
+        // this.getAlbumsFirebase(this.props.userId, 'rock')
     }
    
     render() {
         let totalAlbums = null;
         totalAlbums = this.props.totalAlbums ? this.props.totalAlbums.items: null;
+
+        let playlists = null;
+        if(this.props.playlists) {
+            playlists = Object.keys(this.props.playlists).map(playlist => {
+                return (
+                    <div>
+                        <div className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
+                            <i className="fas fa-music"></i>
+                        </div>
+                        <h2>{playlist}</h2>
+                    </div>
+                )
+            })
+        }
 
         return (
             <div className={styles.Library}>
@@ -123,7 +148,7 @@ class Library extends Component {
                         to="/library/playlists">Playlists</NavLink>
                     <Button
                         btnType={'Login-Hero'}
-                        clicked={this.showModal}
+                        clicked={this.togleModalAdd}
                         >New Playlist</Button>
                 </div>
 
@@ -134,12 +159,14 @@ class Library extends Component {
                             <Card 
                                 totalAlbums={true} 
                                 clicked={this.deleteAlbumSpotify} 
+                                clicked2={this.togleModalPlayist}
                                 token={this.props.token} 
                                 delete={true} 
+                                playlist={true}
                                 results={totalAlbums} />}/> 
                         : null}
                 </div>
-                <Modal show={this.state.show} clicked={this.hideModal}>
+                <Modal show={this.state.showAdd} clicked={this.togleModalAdd}>
                     <h1>Create new playlist</h1>
                     <input className={styles.PlaylistInput} 
                         onKeyDown={this.inputHandler} 
@@ -147,8 +174,13 @@ class Library extends Component {
                         autoFocus></input>
                     <Button
                         btnType={'PlaylistCancel'}
-                        clicked={this.hideModal}
+                        clicked={this.togleModalAdd}
                         >Cancel</Button>
+                </Modal>
+                <Modal show={this.state.showPlaylist} clicked={this.togleModalPlayist}>
+                    <div className={styles.Cards}>
+                        {playlists}
+                    </div>
                 </Modal>
             </div>
         );
@@ -159,13 +191,15 @@ const mapStateToProps = state => {
     return {
         userId: state.auth.userId,
         token: state.auth.spotifyToken,
-        totalAlbums: state.library.totalAlbums
+        totalAlbums: state.library.totalAlbums,
+        playlists: state.library.playlists
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetTotalAlbums: (totalAlbums) => dispatch(actions.setTotalAlbums(totalAlbums))
+        onSetTotalAlbums: (totalAlbums) => dispatch(actions.setTotalAlbums(totalAlbums)),
+        onSetPlaylistName: (playlists) => dispatch(actions.setPlaylistName(playlists))
     };
 };
 

@@ -29,6 +29,9 @@ const Card = (props) => {
                     {props.delete 
                         ? <Button btnType={'Delete'} clicked={() => props.clicked(props.token, item.id)}>Delete</Button>
                         : null}
+                    {props.playlist 
+                        ? <Button btnType={'Save'} clicked={props.clicked2}>save</Button>
+                        : null}
                 </div>
             </div>
         );
