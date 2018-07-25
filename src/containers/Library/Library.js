@@ -14,7 +14,8 @@ import Playlists from './Playlists/Playlists';
 class Library extends Component {
     state = {
         showAdd: false,
-        showPlaylist: false
+        showPlaylist: false,
+        albumToAdd: {}
     }
 
     togleModalAdd = () => {
@@ -96,12 +97,25 @@ class Library extends Component {
         })
     }
 
-    addAlbumFirebase = (userId, playlistName, albumName, artistId, albumId) => {
+    addAlbumFirebase = (userId, playlistName, albumName, artistName, albumId, artistId) => {
         fire.database().ref(`users/${userId}/playlists/${playlistName}`).push({
             albumName: albumName,
+            artistName: artistName,
             albumId: albumId,
             artistId: artistId
         });
+        this.togleModalPlayist();
+    };
+
+    albumToAdd = (albumName, artistName, albumId, artistId) => {
+        this.setState({
+            albumToAdd: {
+                albumName: albumName,
+                artistName: artistName,
+                albumId: albumId,
+                artistId: artistId
+            }
+        })
     };
 
     getAlbumsFirebase = (userid, playlistName) => {
@@ -120,6 +134,7 @@ class Library extends Component {
     }
    
     render() {
+        console.log(this.state.albumToAdd)
         let totalAlbums = null;
         totalAlbums = this.props.totalAlbums ? this.props.totalAlbums.items: null;
 
@@ -128,9 +143,17 @@ class Library extends Component {
             playlists = Object.keys(this.props.playlists).map(playlist => {
                 return (
                     <div>
-                        <div className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
-                            <i className="fas fa-music"></i>
-                        </div>
+                        <a onClick={() => {
+                                this.addAlbumFirebase(this.props.userId, 
+                                    playlist, 
+                                    this.state.albumToAdd.albumName,
+                                    this.state.albumToAdd.artistName,
+                                    this.state.albumToAdd.albumId,
+                                    this.state.albumToAdd.artistId)}}>
+                            <div className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
+                                <i className="fas fa-music"></i>
+                            </div>
+                        </a>
                         <h2>{playlist}</h2>
                     </div>
                 )
@@ -159,13 +182,15 @@ class Library extends Component {
                             <Card 
                                 totalAlbums={true} 
                                 clicked={this.deleteAlbumSpotify} 
-                                clicked2={this.togleModalPlayist}
+                                clicked2={this.albumToAdd}
+                                togleModal={this.togleModalPlayist}
                                 token={this.props.token} 
                                 delete={true} 
                                 playlist={true}
                                 results={totalAlbums} />}/> 
                         : null}
                 </div>
+
                 <Modal show={this.state.showAdd} clicked={this.togleModalAdd}>
                     <h1>Create new playlist</h1>
                     <input className={styles.PlaylistInput} 

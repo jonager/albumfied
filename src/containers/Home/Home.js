@@ -37,7 +37,10 @@ class Home extends Component {
 
     render() {
         let newReleases = null;
-        newReleases = this.state.newReleases ? <Card results= {this.state.newReleases.albums.items} save={true} /> : null;
+        newReleases = this.state.newReleases 
+            ? <Card results= {this.state.newReleases.albums.items} 
+                save={true} /> 
+            : null;
         
         return (
             <div className={styles.Home}>

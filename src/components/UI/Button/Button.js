@@ -5,7 +5,10 @@ const button = (props) => {
     return (
         <button
             className={[styles.Button, styles[props.btnType]].join(' ')}
-            onClick={props.clicked}
+            onClick={()=> {
+                props.clicked(); 
+                if(props.clicked2){props.clicked2()}
+            }}
         >{props.children}</button>
     );
 }

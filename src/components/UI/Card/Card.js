@@ -7,6 +7,7 @@ import * as utility from '../../../shared/utility';
 const Card = (props) => {
     let card = props.results.map(item => {
         item = props.totalAlbums ? item.album : item;
+        console.log(item.type)
         return (
             <div key={item.id} className={styles.Card}>
                 {item.images.length !== 0 
@@ -30,7 +31,7 @@ const Card = (props) => {
                         ? <Button btnType={'Delete'} clicked={() => props.clicked(props.token, item.id)}>Delete</Button>
                         : null}
                     {props.playlist 
-                        ? <Button btnType={'Save'} clicked={props.clicked2}>save</Button>
+                        ? <Button btnType={'Save'} clicked={props.togleModal} clicked2={() => props.clicked2(item.name, item.artists[0].name, item.id, item.artists[0].id)}>save</Button>
                         : null}
                 </div>
             </div>
@@ -44,4 +45,4 @@ const Card = (props) => {
     );
 }
  
-export default Card;
+export default Card; 
