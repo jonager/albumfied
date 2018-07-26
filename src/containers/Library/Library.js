@@ -97,12 +97,13 @@ class Library extends Component {
         })
     }
 
-    addAlbumFirebase = (userId, playlistName, albumName, artistName, albumId, artistId) => {
+    addAlbumFirebase = (userId, playlistName, albumToAdd) => {
+        console.log(albumToAdd)
         fire.database().ref(`users/${userId}/playlists/${playlistName}`).push({
-            albumName: albumName,
-            artistName: artistName,
-            albumId: albumId,
-            artistId: artistId
+            albumName: albumToAdd.albumName,
+            artistName: albumToAdd.artistName,
+            albumId: albumToAdd.albumId,
+            artistId: albumToAdd.artistId
         });
         this.togleModalPlayist();
     };
@@ -134,7 +135,6 @@ class Library extends Component {
     }
    
     render() {
-        console.log(this.state.albumToAdd)
         let totalAlbums = null;
         totalAlbums = this.props.totalAlbums ? this.props.totalAlbums.items: null;
 
@@ -142,14 +142,9 @@ class Library extends Component {
         if(this.props.playlists) {
             playlists = Object.keys(this.props.playlists).map(playlist => {
                 return (
-                    <div>
+                    <div key={this.state.albumToAdd.albumId}>
                         <a onClick={() => {
-                                this.addAlbumFirebase(this.props.userId, 
-                                    playlist, 
-                                    this.state.albumToAdd.albumName,
-                                    this.state.albumToAdd.artistName,
-                                    this.state.albumToAdd.albumId,
-                                    this.state.albumToAdd.artistId)}}>
+                                this.addAlbumFirebase(this.props.userId, playlist, this.state.albumToAdd)}}>
                             <div className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
                                 <i className="fas fa-music"></i>
                             </div>

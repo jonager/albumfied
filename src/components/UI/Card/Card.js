@@ -7,7 +7,6 @@ import * as utility from '../../../shared/utility';
 const Card = (props) => {
     let card = props.results.map(item => {
         item = props.totalAlbums ? item.album : item;
-        console.log(item.type)
         return (
             <div key={item.id} className={styles.Card}>
                 {item.images.length !== 0 
