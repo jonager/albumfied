@@ -30,7 +30,7 @@ const Card = (props) => {
                         ? <Button btnType={'Delete'} clicked={() => props.clicked(props.token, item.id)}>Delete</Button>
                         : null}
                     {props.playlist 
-                        ? <Button btnType={'Save'} clicked={props.togleModal} clicked2={() => props.clicked2(item.name, item.artists[0].name, item.id, item.artists[0].id)}>save</Button>
+                        ? <Button btnType={'Save'} clicked={props.togleModal} clicked2={() => props.clicked2(item.name, item.artists[0].name, item.id, item.artists[0].id, item.images[0].url)}>save</Button>
                         : null}
                 </div>
             </div>

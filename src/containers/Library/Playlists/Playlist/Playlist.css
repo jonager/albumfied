@@ -1,0 +1,54 @@
+.Playlist {
+    padding: 2em;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 5em auto;
+    background-color: #1E1E1E;
+    grid-row-gap: 3em;
+}
+
+.Cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    justify-items: center;
+    grid-row-gap: 3em;
+}
+
+.Playlist h1 {
+    font-weight: bold;
+    font-size: 5em;
+    letter-spacing: 0.2px;
+    color: white;
+    text-align: center;
+}
+
+.Card, .Info {
+    text-align: center;
+}
+
+.Info {
+    position: relative;
+    max-width: 225px;
+    margin: 0 auto;
+}
+
+.Info a {
+    display: block;
+}
+
+.Info a:nth-child(1) {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-size: 1.4em;
+    letter-spacing: 0.03em;
+}
+
+.Info a:nth-child(2) {
+    font-size: 1.2em;
+    text-decoration: none;
+    color: white;
+    opacity: 0.6;
+}

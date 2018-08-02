@@ -29,7 +29,6 @@ class Artist extends Component {
                 'Authorization': 'Bearer ' + token
             }})
             .then( (response) => {
-                console.log(response.data)
                 this.setState({
                     artist: response.data
                 });

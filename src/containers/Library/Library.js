@@ -12,6 +12,8 @@ import Modal from '../../components/UI/Modal/Modal';
 import Playlists from './Playlists/Playlists';
 
 class Library extends Component {
+    // TODO: make cursor appear in search bar of playlists modal.
+    // TODO: prevent adding an album more than once in same playlist.
     state = {
         showAdd: false,
         showPlaylist: false,
@@ -31,6 +33,7 @@ class Library extends Component {
     }
 
     inputHandler = (e) => {
+        // TODO: prevent the creation of 2 playlists with the same name.
         if(e.keyCode === 13) {
             this.addPlaylistFirebase(this.props.userId, e.target.value);
             this.setState({
@@ -98,40 +101,32 @@ class Library extends Component {
     }
 
     addAlbumFirebase = (userId, playlistName, albumToAdd) => {
-        console.log(albumToAdd)
         fire.database().ref(`users/${userId}/playlists/${playlistName}`).push({
             albumName: albumToAdd.albumName,
             artistName: albumToAdd.artistName,
             albumId: albumToAdd.albumId,
-            artistId: albumToAdd.artistId
+            artistId: albumToAdd.artistId,
+            albumImg: albumToAdd.albumImg
         });
         this.togleModalPlayist();
     };
 
-    albumToAdd = (albumName, artistName, albumId, artistId) => {
+    albumToAdd = (albumName, artistName, albumId, artistId, albumImg) => {
         this.setState({
             albumToAdd: {
                 albumName: albumName,
                 artistName: artistName,
                 albumId: albumId,
-                artistId: artistId
+                artistId: artistId,
+                albumImg:albumImg
             }
         })
     };
-
-    getAlbumsFirebase = (userid, playlistName) => {
-        let ref = fire.database().ref(`users/${userid}/playlists/${playlistName}`);
-        ref.on('value', function(snapshot){
-            console.log(snapshot.val());
-        })
-    }
 
     componentDidMount() {
         let token = this.props.token;
         this.getAlbumsSpotify(token);
         this.getPlaylistsFirebase(this.props.userId);
-        // this.addAlbumFirebase(this.props.userId, 'rock', 'Last Train to Lhasa', '7sP5xGJkeSPmAAcf2ufkfV', '5Z8mapYkacgBN46TkH9L3M')
-        // this.getAlbumsFirebase(this.props.userId, 'rock')
     }
    
     render() {
@@ -142,7 +137,7 @@ class Library extends Component {
         if(this.props.playlists) {
             playlists = Object.keys(this.props.playlists).map(playlist => {
                 return (
-                    <div key={this.state.albumToAdd.albumId}>
+                    <div key={playlist + new Date().getTime()}>
                         <a onClick={() => {
                                 this.addAlbumFirebase(this.props.userId, playlist, this.state.albumToAdd)}}>
                             <div className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
