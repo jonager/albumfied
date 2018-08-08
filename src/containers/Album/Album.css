@@ -1,0 +1,37 @@
+.Album {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: auto;
+    background-color: #1E1E1E;
+    color: white;
+    padding-top: 3.5em;
+}
+
+.AlbumInfo {
+    justify-self: center;
+    text-align: center;
+}
+
+.AlbumInfo h2 {
+    font-size: 1.75em;
+    font-weight: bold;
+    padding: 1em 0;
+}
+
+.AlbumInfo span {
+    display: block;
+    opacity: 0.7;
+    font-size: 1.25em;
+    padding-bottom: 1em;
+}
+
+.AlbumTracks {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 1.25em;
+    padding-top: 1.5em;
+    padding-right: 3em;
+    height: 3em;
+}

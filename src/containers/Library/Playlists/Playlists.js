@@ -19,6 +19,7 @@ class Playlists extends Component {
     }
 
     render() { 
+        console.log(window)
         let playlists = null;
         if(this.props.playlists) {
             playlists = Object.keys(this.props.playlists).map(playlist => {

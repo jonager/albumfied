@@ -27,6 +27,7 @@ class App extends Component {
                     <Route path="/library" render={() => <Content isLibrary = {true}/>} />
                     
                     <Route path="/artist/:id" render={() => <Content isArtist={true} token = {this.props.token}/>} />
+                    <Route path="/album/:id" render={() => <Content isAlbum={true} token = {this.props.token}/>} />
                     <Route path="/playlist/:playlistName" render={() => <Content isPlaylist = {true}/>} />
                     <Route path="/logout" component={Logout} />
                 </Switch>

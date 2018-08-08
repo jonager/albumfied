@@ -19,6 +19,22 @@
     background-color: #1ed760;
 }
 
+.PlayPause {
+    color: white;
+    background-color: #1db954;
+    width: 175px;
+    border-radius: 35px;
+    font-size: 1.5em;
+    padding: 0.60em 0;
+    margin: 1em 0;
+}
+
+.PlayPause:hover {
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.06);
+}
+
 .Login-Header {
     color: white;
     background-color: #1db954;
