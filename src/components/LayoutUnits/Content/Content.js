@@ -7,6 +7,7 @@ import Home from '../../../containers/Home/Home';
 import Library from '../../../containers/Library/Library';
 import Artist from '../../../containers/Artist/Artist';
 import Album from '../../../containers/Album/Album';
+import NowPlayingBar from '../../../containers/NowPlayingBar/NowPlayingBar';
 import Playlist from '../../../containers/Library/Playlists/Playlist/Playlist';
 
 const Content = (props) => {
@@ -19,6 +20,7 @@ const Content = (props) => {
             {props.isArtist ? <Artist token={props.token}/> : null}
             {props.isAlbum ? <Album token={props.token}/> : null}
             {props.isPlaylist ? <Playlist token={props.token}/> : null}
+            <NowPlayingBar/>
         </div>
     );
 }

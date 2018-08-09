@@ -14,9 +14,10 @@ export const parseParam = (hash, param) => {
 };
 
 export const millisToMinutesAndSeconds = (millis) => {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    let min = 0|(millis/1000/60)
+    let sec = 0|(millis/1000) % 60;
+
+    return min + ":" + (sec < 10 ? '0' : '') + sec;
 };
 
 export const saveAlbumSpotify = (token, albumId) => {

@@ -22,7 +22,7 @@ class Album extends Component {
     static playerCheckInterval = null;
 
     handleCheckForPlayer() {
-        clearTimeout(Album.playerCheckInterval);
+        //checks that the player is available to use
         Album.playerCheckInterval = setTimeout(() => {
             this.checkForPlayer();
         }, 1000);
@@ -41,11 +41,12 @@ class Album extends Component {
     }
 
     checkForPlayer() {
-        console.log(this.state.playing)
+        console.log('runs')
         if (this.state.playing) {
             this.player.pause();
         }
         if (window.Spotify !== null) {
+            clearTimeout(Album.playerCheckInterval);
             this.player = new window.Spotify.Player({
                 name: `${this.props.userId}'s Spotify Player`,
                 getOAuthToken: cb => { cb(this.props.token); },
@@ -166,11 +167,11 @@ class Album extends Component {
     };
 
     componentDidMount() {
-        // this.handleCheckForPlayer()
-        this.getAlbum(this.props.match.params.id, this.props.token)
+        this.getAlbum(this.props.match.params.id, this.props.token);
     }
 
     render() {
+        console.log(this.player)
         let {
             artistName,
             trackName,
@@ -190,7 +191,10 @@ class Album extends Component {
                     <h2>{this.state.albumInfo.name}</h2>
                     <span>{this.state.albumInfo.artists[0].name}</span>
                     <span>{`${this.state.albumInfo.release_date.slice(0, 4)} • ${this.state.albumInfo.tracks.items.length} SONGS`}</span>
-                    <Button btnType={'PlayPause'}>Play</Button>
+                    <Button 
+                        btnType={'PlayPause'}
+                        clicked={() => {this.handleCheckForPlayer()}}
+                        >Play</Button>
                 </div>
                 : null;
 
