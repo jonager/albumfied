@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import styles from './Album.css';
 import * as utility from '../../shared/utility';
+import * as actions from '../../store/actions/index';
 
 class Album extends Component {
     state = {
@@ -28,23 +29,7 @@ class Album extends Component {
         }, 1000);
     }
 
-    onPrevClick() {
-        this.player.previousTrack();
-    }
-
-    onPlayClick() {
-        this.player.togglePlay();
-    }
-
-    onNextClick() {
-        this.player.nextTrack();
-    }
-
     checkForPlayer() {
-        console.log('runs')
-        if (this.state.playing) {
-            this.player.pause();
-        }
         if (window.Spotify !== null) {
             clearTimeout(Album.playerCheckInterval);
             this.player = new window.Spotify.Player({
@@ -67,19 +52,12 @@ class Album extends Component {
                 duration,
             } = state.track_window;
             const trackName = currentTrack.name;
-            const albumName = currentTrack.album.name;
-            const artistName = currentTrack.artists
-                .map(artist => artist.name)
-                .join(", ");
-            const playing = !state.paused;
-
+            // const playing = !state.paused;
+            this.props.onSetPlayStatus(!state.paused);
             this.setState({
                 position,
                 duration,
-                trackName,
-                albumName,
-                artistName,
-                playing
+                trackName
             });
         }
     }
@@ -96,22 +74,19 @@ class Album extends Component {
 
         // Playback status updates
         this.player.on('player_state_changed', state => {
-            console.log(state)
-            this.player.on('player_state_changed', state => this.onStateChanged(state));
+            this.player.on('player_state_changed', () => this.onStateChanged(state));
         });
 
         // Ready
         this.player.on('ready', async data => {
             let { device_id: deviceId } = data;
-            await this.setState({ deviceId: deviceId });
-            // this.transferPlaybackHere();
-            this.playAlbum(this.state.deviceId, this.props.match.params.id)
+            await this.transferPlaybackHere(deviceId);
+            await this.playAlbum(deviceId, this.props.match.params.id)
         });
     }
 
-    //make music play on the app regardless of whether the user was playing music somewhere else
-    transferPlaybackHere() {
-        const { deviceId } = this.state;
+    //make music play on the app regardless of whether the user was playing music somewhere else or not
+    transferPlaybackHere(deviceId) {
         fetch("https://api.spotify.com/v1/me/player", {
             method: "PUT",
             headers: {
@@ -150,7 +125,7 @@ class Album extends Component {
 
     playAlbum = (deviceId, albumId) => {
         axios({
-            method: 'put',
+            method: 'PUT',
             url: `https://api.spotify.com/v1/me/player/play`,
             headers: {
                 'Accept': 'application/json',
@@ -171,16 +146,16 @@ class Album extends Component {
     }
 
     render() {
-        console.log(this.player)
-        let {
-            artistName,
-            trackName,
-            albumName,
-            error,
-            position,
-            duration,
-            playing,
-        } = this.state;
+        // console.log(this.state)
+        // let {
+        //     artistName,
+        //     trackName,
+        //     albumName,
+        //     error,
+        //     position,
+        //     duration,
+        //     playing,
+        // } = this.state;
 
         let currentAlbum =
             this.state.albumInfo
@@ -201,7 +176,6 @@ class Album extends Component {
         let tracks = null;
         if (this.state.albumInfo) {
             let tracksArr = this.state.albumInfo.tracks.items
-            console.log(tracksArr)
             tracks = tracksArr.map(track => {
                 return (
                     <li className={styles.AlbumTracks} key={track.id}>
@@ -236,4 +210,10 @@ const mapStateToProps = state => {
     }
 };
 
-export default withRouter(connect(mapStateToProps)(Album));
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetPlayStatus: (playing) => dispatch(actions.setPlayingStatus(playing))
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Album));

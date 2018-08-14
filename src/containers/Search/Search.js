@@ -50,7 +50,6 @@ class Search extends Component {
     };
 
     render() { 
-        console.log(this.state.results)
         return (
             <div>
                 <SearchBar inputHandler={this.inputChangeHandler}/>

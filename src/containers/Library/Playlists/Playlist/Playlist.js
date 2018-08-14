@@ -63,7 +63,3 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(connect(mapStateToProps)(Playlist));
-
-{/* <button onClick={() => this.onPrevClick()}>Previous</button>
-<button onClick={() => this.onPlayClick()}>{playing ? "Pause" : "Play"}</button>
-<button onClick={() => this.onNextClick()}>Next</button> */}

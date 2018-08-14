@@ -11,12 +11,14 @@ import registerServiceWorker from './registerServiceWorker';
 
 import authReducer from './store/reducers/auth';
 import libraryReducer from './store/reducers/library';
+import albumReducer from './store/reducers/album';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 let rootReducer = combineReducers({
     auth: authReducer,
-    library: libraryReducer
+    library: libraryReducer,
+    album: albumReducer
 });
 
 let store = createStore(rootReducer, composeEnhancers(

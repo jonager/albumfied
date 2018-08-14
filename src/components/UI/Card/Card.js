@@ -15,7 +15,7 @@ const Card = (props) => {
                         alt="Album/Artist"/> 
                     : <img style={{...item.type === 'artist' ? {borderRadius: '50%'} : null}} 
                         src="https://imgplaceholder.com/225x225/75a016/d8db26?text=picture+unavailable&font-size=20" 
-                        alt="Placeholder, not artist picture available"/>}
+                        alt="Placeholder, artist cover available"/>}
                 <div className={styles.Info}>
                     {item.type === 'artist' 
                         ? <Link to={'/artist/' + item.id} title={item.name}>{item.name}</Link> 

@@ -8,3 +8,7 @@ export {
     setTotalAlbums,
     setPlaylistName
 } from './library';
+
+export {
+    setPlayingStatus
+} from './album';
