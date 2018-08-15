@@ -55,13 +55,13 @@ class NowPlayingBar extends Component {
 
     render() {
         let resumePauseAlbum = <Button
-            btnType={'Login-Hero'}
+            btnType={'PlayingBar'}
             clicked={this.playAlbum}
             ><i className="far fa-play-circle"></i></Button>;
         
         if (this.props.isPlaying) {
             resumePauseAlbum = <Button
-                btnType={'Login-Hero'}
+                btnType={'PlayingBar'}
                 clicked={this.pauseAlbum}
                 ><i className="far fa-pause-circle"></i></Button>
         }
@@ -69,15 +69,15 @@ class NowPlayingBar extends Component {
         return (
             <div className={styles.NowPlayingBar}>
                 <div className={styles.PlayingButtons}>
-                <Button
-                    btnType={'Login-Hero'}
-                    clicked={this.playPreviousSong}
-                    ><i className="fas fa-backward"></i></Button>
-                {resumePauseAlbum}
-                <Button
-                    btnType={'Login-Hero'}
-                    clicked={this.playNextSong}
-                    ><i className="fas fa-forward"></i></Button>
+                    <Button
+                        btnType={'PlayingBar'}
+                        clicked={this.playPreviousSong}
+                        ><i className="fas fa-backward"></i></Button>
+                    {resumePauseAlbum}
+                    <Button
+                        btnType={'PlayingBar'}
+                        clicked={this.playNextSong}
+                        ><i className="fas fa-forward"></i></Button>
                 </div>
             </div>
         );

@@ -10,3 +10,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.PlayingButtons {
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+}
