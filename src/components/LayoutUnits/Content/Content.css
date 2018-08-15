@@ -1,14 +1,3 @@
-/* .Content {
-    background: rgba(101,98,62,1);
-background: -moz-linear-gradient(top, rgba(101,98,62,1) 0%, rgba(49,45,7,1) 77%, rgba(49,45,7,1) 100%);
-background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(101,98,62,1)), color-stop(77%, rgba(49,45,7,1)), color-stop(100%, rgba(49,45,7,1)));
-background: -webkit-linear-gradient(top, rgba(101,98,62,1) 0%, rgba(49,45,7,1) 77%, rgba(49,45,7,1) 100%);
-background: -o-linear-gradient(top, rgba(101,98,62,1) 0%, rgba(49,45,7,1) 77%, rgba(49,45,7,1) 100%);
-background: -ms-linear-gradient(top, rgba(101,98,62,1) 0%, rgba(49,45,7,1) 77%, rgba(49,45,7,1) 100%);
-background: linear-gradient(to bottom, rgba(101,98,62,1) 0%, rgba(49,45,7,1) 77%, rgba(49,45,7,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#65623e', endColorstr='#312d07', GradientType=0 );
-} */
-
 .Content {
     height: 100%;
     display: grid;

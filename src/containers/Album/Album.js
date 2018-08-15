@@ -146,17 +146,6 @@ class Album extends Component {
     }
 
     render() {
-        // console.log(this.state)
-        // let {
-        //     artistName,
-        //     trackName,
-        //     albumName,
-        //     error,
-        //     position,
-        //     duration,
-        //     playing,
-        // } = this.state;
-
         let currentAlbum =
             this.state.albumInfo
                 ? <div className={styles.AlbumInfo}>

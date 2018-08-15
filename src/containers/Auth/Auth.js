@@ -5,7 +5,7 @@ import * as actions from '../../store/actions/index';
 import * as utility from '../../shared/utility';
 class Auth extends Component {
     componentDidMount() {
-        // Get authentication from spotify
+        // Get authentication token from spotify
         let token = utility.parseParam(this.props.location.hash.substr(1), 'access_token');
         
         if(token) {

@@ -10,7 +10,7 @@ export const getAuth = (token) => {
     };
 };
 
-export const userLogout = (token) => {
+export const userLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     return {
@@ -31,7 +31,7 @@ const addUserFirebase = (userId) => {
     });
 };
 
-const checkUserExists = (userId, token) => {
+const checkUserExists = (userId) => {
     const usersRef = fire.database().ref('/users');
     usersRef.child(userId).once('value', function(snapshot){
         if (!snapshot.exists()) {
@@ -39,24 +39,6 @@ const checkUserExists = (userId, token) => {
         } 
     });
 };
-
-// export const getAlbums = (token) => {
-//     console.log(token)
-//     axios({
-//         method:'get',
-//         url:'https://api.spotify.com/v1/me/albums',
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' + token
-//         }})
-//         .then( (response) => {
-//             console.log(response.data.items);
-//         })
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// };
 
 export const getUserId = (token) => {
     return dispatch => {
