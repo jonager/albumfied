@@ -1,6 +1,5 @@
 .Sidebar {
     background-color: black;
-    opacity: 0.9;
     padding-left: 2.5em;
     padding-top: 2.5em;
 }
@@ -14,7 +13,7 @@
 }
 
 .UList li:hover{
-    opacity: 0.95;
+    opacity: 1;
 }
 
 .UList li a {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter,Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './App.css';
+import * as actions from './store/actions/index';
 
 import Layout from './hoc/Layout/Layout';
 import LandingPage from './components/LandingPage/LandingPage';
@@ -10,6 +11,16 @@ import Content from './components/LayoutUnits/Content/Content';
 import Logout from './containers/Auth/Logout/Logout';
 
 class App extends Component {
+    constructor(props) {
+        super(props); 
+        // Log out user when page is refreshed
+        if (window.performance) {
+            if (performance.navigation.type === 1) {
+                this.props.onLogout();
+            } 
+        }
+    }
+
     render() {
         let routes = (
             <Switch>
@@ -51,4 +62,10 @@ const mapStateToProps = state => {
     }
 };
 
-export default withRouter(connect(mapStateToProps)(App));
+const mapDispatchToProps = dispatch => {
+    return {
+        onLogout: () => dispatch(actions.userLogout())
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

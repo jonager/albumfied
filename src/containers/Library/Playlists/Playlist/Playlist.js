@@ -9,8 +9,8 @@ class Playlist extends Component {
         albums: null
      };
 
-    getAlbumsFirebase = (userid, playlistName) => {
-        let ref = fire.database().ref(`users/${userid}/playlists/${playlistName}`);
+    getAlbumsFirebase = (userId, playlistName) => {
+        let ref = fire.database().ref(`users/${userId}/playlists/${playlistName}`);
         ref.on('value', (snapshot) => {
             let albums = snapshot.val();
             delete albums['album'];
@@ -26,6 +26,7 @@ class Playlist extends Component {
     }
 
     render() { 
+        console.log('runs')
         let albums = null;
         if(this.state.albums) {
             albums = this.state.albums.map(album => {
