@@ -6,8 +6,8 @@ import styles from './Playlist.css';
 
 class Playlist extends Component {
     state = { 
-        albums: null
-     };
+        albums: []
+    };
 
     getAlbumsFirebase = (userId, playlistName) => {
         let ref = fire.database().ref(`users/${userId}/playlists/${playlistName}`);
@@ -15,11 +15,10 @@ class Playlist extends Component {
             let albums = snapshot.val();
             // * Returns if the playlist doesn't exist because it was just eliminated
             if (!albums) {
-                console.log('runs')
                 return
             }
-            delete albums['album'];
 
+            delete albums['album'];
             this.setState({
                 albums: Object.values(albums)
             });
@@ -32,7 +31,9 @@ class Playlist extends Component {
 
     render() {
         let albums = null;
-        if(this.state.albums) {
+        let message = null;
+
+        if(this.state.albums.length !== 0) {
             albums = this.state.albums.map(album => {
                 return (
                     <div key={album.albumId} className={styles.Card}>
@@ -46,12 +47,21 @@ class Playlist extends Component {
                     </div>
                 )
             })
+        } else {
+            message = 
+                <React.Fragment>
+                    <p>Ooop! Your playlist seems to be empty.</p>
+                    <p><Link to={'/search'}>Search for your favorite albums and add them to {this.props.match.params.playlistName}</Link></p>
+                </React.Fragment>
         }
         
         return (
             <div className={styles.Playlist}>
                 <div>
                     <h1>{this.props.match.params.playlistName}</h1>
+                    <div className={styles.EmptyPlaylist}>
+                        {message}   
+                    </div>
                 </div>
                 <div className={styles.Cards}>
                     {albums}

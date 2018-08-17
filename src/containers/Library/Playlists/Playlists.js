@@ -15,14 +15,14 @@ class Playlists extends Component {
         })
     }
 
-    componentDidMount() {
-        this.getPlaylistsFirebase(this.props.userId);
-    }
-
     deletePlaylist(userId, playlistName) {
         fire.database().ref(`users/${userId}`).child('playlists').child(playlistName).remove()
     }
-
+    
+    componentDidMount() {
+        this.getPlaylistsFirebase(this.props.userId)
+    }
+    
     render() { 
         let playlists = null;
         if(this.props.playlists) {
