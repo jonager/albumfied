@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import Button from '../../../components/UI/Button/Button';
 
 class Playlists extends Component {
-    // TODO: fix bug, when you delete list after going into that list, you get an error in the Playlist component
     // TODO: add cover to playlist
     getPlaylistsFirebase = (userId) => {
         let ref = fire.database().ref(`users/${userId}/playlists`);
