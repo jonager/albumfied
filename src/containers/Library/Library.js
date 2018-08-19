@@ -14,6 +14,8 @@ import Playlists from './Playlists/Playlists';
 class Library extends Component {
     // TODO: make cursor appear in search bar of playlists modal.
     // TODO: prevent adding an album more than once in same playlist.
+    // TODO: display more than 50 albums in library.
+    // TODO: display message to tell users a playlist/album with that name already exists.
     state = {
         showAdd: false,
         showPlaylist: false,
@@ -33,9 +35,8 @@ class Library extends Component {
     }
 
     inputHandler = (e) => {
-        // TODO: prevent the creation of 2 playlists with the same name.
         if(e.keyCode === 13) {
-            this.addPlaylistFirebase(this.props.userId, e.target.value);
+            this.checkPlaylistExists(this.props.userId, e.target.value);
             this.setState({
                 showAdd: false
             });
@@ -93,6 +94,15 @@ class Library extends Component {
         });
     };
 
+    checkPlaylistExists = (userId, playlistName) => {
+        const playlistsRef = fire.database().ref(`users/${userId}/playlists`);        
+        playlistsRef.child(playlistName).once('value', (snapshot) => {
+            if (!snapshot.exists()) {
+                this.addPlaylistFirebase(userId, playlistName);
+            } 
+        });
+    };
+
     getPlaylistsFirebase = (userid) => {
         this.ref = fire.database().ref(`users/${userid}/playlists`);
         this.ref.on('value', (snapshot) => {
@@ -110,6 +120,15 @@ class Library extends Component {
         });
         this.togleModalPlayist();
     };
+
+    // checkAlbumExists = (userId, playlistName, albumToAdd) => {
+    //     const albumsRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`);        
+    //     albumsRef.child(albumToAdd.albumName).once('value', (snapshot) => {
+    //         if (!snapshot.exists()) {
+    //             this.addAlbumFirebase(userId, playlistName, albumToAdd);
+    //         } 
+    //     });
+    // };
 
     albumToAdd = (albumName, artistName, albumId, artistId, albumImg) => {
         this.setState({
