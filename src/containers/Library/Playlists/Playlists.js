@@ -9,8 +9,8 @@ import Button from '../../../components/UI/Button/Button';
 class Playlists extends Component {
     // TODO: add cover to playlist
     getPlaylistsFirebase = (userId) => {
-        let ref = fire.database().ref(`users/${userId}/playlists`);
-        ref.on('value', (snapshot) => {
+        this.ref = fire.database().ref(`users/${userId}/playlists`);
+        this.ref.on('value', (snapshot) => {
             this.props.onSetPlaylistName(snapshot.val())
         })
     }
@@ -21,6 +21,10 @@ class Playlists extends Component {
     
     componentDidMount() {
         this.getPlaylistsFirebase(this.props.userId)
+    }
+
+    componentWillUnmount() {
+        this.ref.off('value');
     }
     
     render() { 

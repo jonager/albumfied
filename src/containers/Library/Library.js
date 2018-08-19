@@ -94,8 +94,8 @@ class Library extends Component {
     };
 
     getPlaylistsFirebase = (userid) => {
-        let ref = fire.database().ref(`users/${userid}/playlists`);
-        ref.on('value', (snapshot) => {
+        this.ref = fire.database().ref(`users/${userid}/playlists`);
+        this.ref.on('value', (snapshot) => {
             this.props.onSetPlaylistName(snapshot.val())
         })
     }
@@ -127,6 +127,10 @@ class Library extends Component {
         let token = this.props.token;
         this.getAlbumsSpotify(token);
         this.getPlaylistsFirebase(this.props.userId);
+    }
+
+    componentWillUnmount() {
+        this.ref.off('value');
     }
    
     render() {

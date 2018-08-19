@@ -10,14 +10,10 @@ class Playlist extends Component {
     };
 
     getAlbumsFirebase = (userId, playlistName) => {
-        let ref = fire.database().ref(`users/${userId}/playlists/${playlistName}`);
-        ref.on('value', (snapshot) => {
+        this.ref = fire.database().ref(`users/${userId}/playlists/${playlistName}`);
+        this.ref.on('value', (snapshot) => {
             let albums = snapshot.val();
-            // * Returns if the playlist doesn't exist because it was just eliminated
-            if (!albums) {
-                return
-            }
-
+            
             delete albums['album'];
             this.setState({
                 albums: Object.values(albums)
@@ -27,6 +23,10 @@ class Playlist extends Component {
 
     componentDidMount() {
         this.getAlbumsFirebase(this.props.userId, this.props.match.params.playlistName);
+    }
+
+    componentWillUnmount() {
+        this.ref.off('value');
     }
 
     render() {
