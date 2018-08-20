@@ -23,11 +23,16 @@
     border: none;
 }
 
+.CancelButton:hover {
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.15);
+}
+
 .ModalMain i {
     font-size: 5em;
     color: white;
     cursor: pointer;
-    margin-bottom: .5em;
 }
 
 .DisplayBlock {

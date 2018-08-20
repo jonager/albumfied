@@ -59,7 +59,7 @@ class Playlists extends Component {
                         </div>
                         <Modal show={this.state.showDelete} clicked={this.togleModalDelete}>
                             <div className={styles.Modal}>
-                                <h2>Do you really want to delete <span>{playlist}</span></h2>
+                                <h2>Do you really want to delete <span>{playlist}</span> ?</h2>
                                 <div className={styles.Buttons}>
                                     <Button
                                         btnType={'PlaylistCancel'}
