@@ -85,6 +85,9 @@
     background-color: white;
     color: black;
     opacity: 1;
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.06);
 }
 
 .Save {
@@ -101,6 +104,30 @@
     padding: 3px;
 }
 
+.Delete:hover {
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.15);
+}
+
+.DeletePlaylist {
+    color: white;
+    background-color: red;
+    border-radius: 22px;
+    border: red solid 2px;
+    width: 8em;
+    opacity: 0.9;
+    font-size: 1.5em;
+}
+
+.DeletePlaylist:hover {
+    background-color: white;
+    color: #FF8360;
+    opacity: 1;
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.10);
+}
 
 
 

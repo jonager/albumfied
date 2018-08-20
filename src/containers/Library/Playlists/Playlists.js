@@ -5,10 +5,20 @@ import styles from './Playlists.css';
 import * as actions from '../../../store/actions/index';
 import { Link } from 'react-router-dom'; 
 import Button from '../../../components/UI/Button/Button';
+import Modal from '../../../components/UI/Modal/Modal';
 
 class Playlists extends Component {
     // TODO: add cover to playlist
-    // TODO: add modal to ask user if they are really sure they want to delete a playlist.
+    state = {
+        showDelete : false
+    }
+
+    togleModalDelete = () => {
+        this.setState({
+            showDelete: !this.state.showDelete
+        });
+    }
+
     getPlaylistsFirebase = (userId) => {
         this.ref = fire.database().ref(`users/${userId}/playlists`);
         this.ref.on('value', (snapshot) => {
@@ -17,7 +27,8 @@ class Playlists extends Component {
     }
 
     deletePlaylist(userId, playlistName) {
-        fire.database().ref(`users/${userId}`).child('playlists').child(playlistName).remove()
+        fire.database().ref(`users/${userId}`).child('playlists').child(playlistName).remove();
+        this.togleModalDelete();
     }
     
     componentDidMount() {
@@ -43,9 +54,24 @@ class Playlists extends Component {
                         <div>
                             <Button
                                 btnType={'Delete'}
-                                clicked={() => {this.deletePlaylist(this.props.userId, playlist)}}
+                                clicked={this.togleModalDelete}
                                 >Delete</Button>
                         </div>
+                        <Modal show={this.state.showDelete} clicked={this.togleModalDelete}>
+                            <div className={styles.Modal}>
+                                <h2>Do you really want to delete <span>{playlist}</span></h2>
+                                <div className={styles.Buttons}>
+                                    <Button
+                                        btnType={'PlaylistCancel'}
+                                        clicked={this.togleModalDelete}
+                                        >Cancel</Button>
+                                    <Button
+                                        btnType={'DeletePlaylist'}
+                                        clicked={() => {this.deletePlaylist(this.props.userId, playlist)}}
+                                        >Delete</Button>
+                                </div>
+                            </div>
+                        </Modal>
                     </div>
                 )
             })
