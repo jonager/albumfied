@@ -101,6 +101,9 @@ class Library extends Component {
         fire.database().ref(`users/${userId}`).child('playlists').child(playlistName).set({
             album: 0
         });
+        this.props.history.push({
+            pathname: `/playlist/${playlistName}`
+        });
     };
 
     checkPlaylistExists = (userId, playlistName) => {
