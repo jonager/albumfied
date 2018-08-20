@@ -3,10 +3,12 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import fire from '../../../../fire';
 import styles from './Playlist.css';
+import Button from '../../../../components/UI/Button/Button';
 
 class Playlist extends Component {
     state = { 
-        albums: []
+        albums: [],
+        playlistName: this.props.match.params.playlistName
     };
 
     getAlbumsFirebase = (userId, playlistName) => {
@@ -21,8 +23,17 @@ class Playlist extends Component {
         })
     }
 
+    deleteAlbum(userId, playlistName, albumId) {
+        let albumRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`)
+        albumRef.orderByChild('albumId').equalTo(albumId).once('value', snapshot => {
+            let updates= {}
+            snapshot.forEach(child => updates[child.key] = null);
+            albumRef.update(updates);
+        });
+    }
+
     componentDidMount() {
-        this.getAlbumsFirebase(this.props.userId, this.props.match.params.playlistName);
+        this.getAlbumsFirebase(this.props.userId, this.state.playlistName);
     }
 
     componentWillUnmount() {
@@ -43,6 +54,12 @@ class Playlist extends Component {
                         <div className={styles.Info}>
                             <Link to={'/artist/' + album.artistId} title={album.artistName}>{album.artistName}</Link> 
                             <Link to={'/album/' + album.albumId} title={album.albumName}>{album.albumName}</Link>
+                        </div>
+                        <div>
+                            <Button
+                                btnType={'Delete'}
+                                clicked={() => {this.deleteAlbum(this.props.userId, this.state.playlistName, album.albumId)}}
+                                >Delete</Button>
                         </div>
                     </div>
                 )

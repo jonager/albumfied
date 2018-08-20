@@ -8,6 +8,7 @@ import Button from '../../../components/UI/Button/Button';
 
 class Playlists extends Component {
     // TODO: add cover to playlist
+    // TODO: add modal to ask user if they are really sure they want to delete a playlist.
     getPlaylistsFirebase = (userId) => {
         this.ref = fire.database().ref(`users/${userId}/playlists`);
         this.ref.on('value', (snapshot) => {
