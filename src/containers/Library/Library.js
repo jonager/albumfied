@@ -13,7 +13,6 @@ import Playlists from './Playlists/Playlists';
 
 class Library extends Component {
     // TODO: make cursor appear in search bar of playlists modal.
-    // TODO: prevent adding an album more than once in same playlist.
     // TODO: display more than 50 albums in library.
     // TODO: display message to tell users a playlist/album with that name already exists.
     state = {
@@ -118,17 +117,26 @@ class Library extends Component {
             artistId: albumToAdd.artistId,
             albumImg: albumToAdd.albumImg
         });
+    };
+
+    checkAlbumExists = (userId, playlistName, albumToAdd) => {
+        const albumRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`);        
+        albumRef.orderByChild('albumId').equalTo(albumToAdd.albumId).once('value', (snapshot) => {
+            if (!snapshot.exists()) {
+                this.addAlbumFirebase(userId, playlistName, albumToAdd);
+            } 
+        });
         this.togleModalPlayist();
     };
 
-    // checkAlbumExists = (userId, playlistName, albumToAdd) => {
-    //     const albumsRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`);        
-    //     albumsRef.child(albumToAdd.albumName).once('value', (snapshot) => {
-    //         if (!snapshot.exists()) {
-    //             this.addAlbumFirebase(userId, playlistName, albumToAdd);
-    //         } 
-    //     });
-    // };
+    deleteAlbum(userId, playlistName, albumId) {
+        let albumRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`)
+        albumRef.orderByChild('albumId').equalTo(albumId).once('value', snapshot => {
+            let updates= {}
+            snapshot.forEach(child => updates[child.key] = null);
+            albumRef.update(updates);
+        });
+    }
 
     albumToAdd = (albumName, artistName, albumId, artistId, albumImg) => {
         this.setState({
@@ -162,7 +170,7 @@ class Library extends Component {
                 return (
                     <div key={playlist + new Date().getTime()}>
                         <a onClick={() => {
-                                this.addAlbumFirebase(this.props.userId, playlist, this.state.albumToAdd)}}>
+                                this.checkAlbumExists(this.props.userId, playlist, this.state.albumToAdd)}}>
                             <div className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
                                 <i className="fas fa-music"></i>
                             </div>
