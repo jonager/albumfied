@@ -12,13 +12,17 @@ import Modal from '../../components/UI/Modal/Modal';
 import Playlists from './Playlists/Playlists';
 
 class Library extends Component {
-    // TODO: make cursor appear in search bar of playlists modal.
     // TODO: display more than 50 albums in library.
     // TODO: display message to tell users a playlist/album with that name already exists.
-    state = {
-        showAdd: false,
-        showPlaylist: false,
-        albumToAdd: {}
+    constructor(props) {
+        super(props);
+        this.state = {
+            showAdd: false,
+            showPlaylist: false,
+            albumToAdd: {}
+        }
+
+        this.inputRef = React.createRef();
     }
 
     togleModalAdd = () => {
@@ -42,6 +46,12 @@ class Library extends Component {
             e.target.value = '';
         }
     };
+
+    focusInputModal() {
+        // Explicitly focus the text input using the raw DOM API
+        // Note: we're accessing "current" to get the DOM node
+        this.inputRef.current.focus();
+    }
 
     getAlbumsSpotify = (token) => {
         axios({
@@ -129,7 +139,7 @@ class Library extends Component {
         this.togleModalPlayist();
     };
 
-    deleteAlbum(userId, playlistName, albumId) {
+    deleteAlbum = (userId, playlistName, albumId) => {
         let albumRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`)
         albumRef.orderByChild('albumId').equalTo(albumId).once('value', snapshot => {
             let updates= {}
@@ -158,6 +168,12 @@ class Library extends Component {
 
     componentWillUnmount() {
         this.ref.off('value');
+    }
+
+    componentDidUpdate(prevState) {
+        if(this.state.showAdd !== prevState.showAdd) {
+            this.focusInputModal();
+        }
     }
    
     render() {
@@ -214,10 +230,11 @@ class Library extends Component {
 
                 <Modal show={this.state.showAdd} clicked={this.togleModalAdd}>
                     <h1>Create new playlist</h1>
-                    <input className={styles.PlaylistInput} 
+                    <input 
+                        className={styles.PlaylistInput} 
                         onKeyDown={this.inputHandler} 
                         placeholder="Playlist name" type="text" 
-                        autoFocus></input>
+                        ref={this.inputRef}></input>
                     <Button
                         btnType={'PlaylistCancel'}
                         clicked={this.togleModalAdd}
