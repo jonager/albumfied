@@ -97,6 +97,12 @@
     padding: 3px;
 }
 
+.Save:hover {
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.15);
+}
+
 .Delete {
     color: white;
     background-color: red;
@@ -110,6 +116,21 @@
     transform: scale(1.15);
 }
 
+.DeleteMyAlbums {
+    color: white;
+    background-color: red;
+    border-radius: 25px;
+    padding: 3px;
+    margin-right: 1em;
+}
+
+.DeleteMyAlbums:hover {
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.15);
+}
+
+
 .DeletePlaylist {
     color: white;
     background-color: red;
@@ -122,7 +143,7 @@
 
 .DeletePlaylist:hover {
     background-color: white;
-    color: #FF8360;
+    color: black;
     opacity: 1;
     transition: none 33ms cubic-bezier(.3,0,0,1);
     transition-property: all;

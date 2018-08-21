@@ -23,7 +23,7 @@ class Library extends Component {
         }
 
         this.inputRef = React.createRef();
-    }
+    }    
 
     togleModalAdd = () => {
         this.setState({

@@ -16,3 +16,10 @@
     display: flex;
     justify-content: space-between;
 }
+
+.PlayingButtons button:hover {
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.20);
+    cursor: default;
+}

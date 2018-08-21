@@ -10,13 +10,23 @@ import Modal from '../../../components/UI/Modal/Modal';
 class Playlists extends Component {
     // TODO: add cover to playlist
     state = {
-        showDelete : false
+        playlistName: null,
+        showDelete: false
     }
 
-    togleModalDelete = () => {
-        this.setState({
-            showDelete: !this.state.showDelete
-        });
+    togleModalDelete = (playlist) => {
+        console.log(playlist)
+        if(playlist) {
+            this.setState({
+                playlistName: playlist,
+                showDelete: !this.state.showDelete
+            });
+        } else {
+            this.setState({
+                playlistName: null,
+                showDelete: !this.state.showDelete
+            });
+        }
     }
 
     getPlaylistsFirebase = (userId) => {
@@ -54,29 +64,33 @@ class Playlists extends Component {
                         <div>
                             <Button
                                 btnType={'Delete'}
-                                clicked={this.togleModalDelete}
+                                clicked={() => this.togleModalDelete(playlist)}
                                 >Delete</Button>
                         </div>
-                        <Modal show={this.state.showDelete} clicked={this.togleModalDelete}>
-                            <div className={styles.Modal}>
-                                <h2>Do you really want to delete <span>{playlist}</span> ?</h2>
-                                <div className={styles.Buttons}>
-                                    <Button
-                                        btnType={'PlaylistCancel'}
-                                        clicked={this.togleModalDelete}
-                                        >Cancel</Button>
-                                    <Button
-                                        btnType={'DeletePlaylist'}
-                                        clicked={() => {this.deletePlaylist(this.props.userId, playlist)}}
-                                        >Delete</Button>
-                                </div>
-                            </div>
-                        </Modal>
                     </div>
                 )
             })
         }
-        return ( playlists )
+        return ( 
+            <React.Fragment>
+                {playlists}
+                <Modal show={this.state.showDelete} clicked={() => this.togleModalDelete(null)}>
+                    <div className={styles.Modal}>
+                        <h2>Do you really want to delete <span>{this.state.playlistName}</span> ?</h2>
+                        <div className={styles.Buttons}>
+                            <Button
+                                btnType={'PlaylistCancel'}
+                                clicked={() => this.togleModalDelete(null)}
+                                >Cancel</Button>
+                            <Button
+                                btnType={'DeletePlaylist'}
+                                clicked={() => {this.deletePlaylist(this.props.userId, this.state.playlistName)}}
+                                >Delete</Button>
+                        </div>
+                    </div>
+                </Modal>
+            </React.Fragment>
+         )
     }
 }
 
