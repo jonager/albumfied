@@ -85,6 +85,7 @@ class Playlists extends Component {
                             <Button
                                 btnType={'DeletePlaylist'}
                                 clicked={() => {this.deletePlaylist(this.props.userId, this.state.playlistName)}}
+                                clicked2={this.props.notify}
                                 >Delete</Button>
                         </div>
                     </div>

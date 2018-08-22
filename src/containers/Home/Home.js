@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {ToastContainer, ToastStore} from 'react-toasts';
 import Card from '../../components/UI/Card/Card';
 import styles from './Home.css';
 import axios from 'axios';
@@ -6,6 +7,11 @@ import axios from 'axios';
 class Home extends Component {
     state ={
         newReleases: null
+    }
+    // #1db954
+    
+    notifyAdded = () => {
+        ToastStore.success('Album has been saved to Your Music!');
     }
 
     getNewReleases = (token) => {
@@ -38,12 +44,15 @@ class Home extends Component {
     render() {
         let newReleases = null;
         newReleases = this.state.newReleases 
-            ? <Card results= {this.state.newReleases.albums.items} 
+            ? <Card 
+                results= {this.state.newReleases.albums.items} 
+                notify={this.notifyAdded}
                 save={true} /> 
             : null;
         
         return (
             <div className={styles.Home}>
+                <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT}/>
                 <h1>New Releases</h1>
                 <div className={styles.Cards}>
                     {newReleases}    

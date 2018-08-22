@@ -5,6 +5,7 @@
     grid-template-rows: 5em auto;
     background-color: #1E1E1E;
     grid-row-gap: 3em;
+    padding-bottom: 10em;
 }
 
 .Cards {

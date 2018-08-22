@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom'; 
+import {ToastContainer, ToastStore} from 'react-toasts';
 import { connect } from 'react-redux';
 import fire from '../../../../fire';
 import styles from './Playlist.css';
@@ -10,6 +11,10 @@ class Playlist extends Component {
         albums: [],
         playlistName: this.props.match.params.playlistName
     };
+
+    notifyRemoved = (playlistName) => {
+        ToastStore.error(`Album has been removed from ${playlistName}!`);
+    }
 
     getAlbumsFirebase = (userId, playlistName) => {
         this.ref = fire.database().ref(`users/${userId}/playlists/${playlistName}`);
@@ -59,6 +64,7 @@ class Playlist extends Component {
                             <Button
                                 btnType={'Delete'}
                                 clicked={() => {this.deleteAlbum(this.props.userId, this.state.playlistName, album.albumId)}}
+                                clicked2={() => {this.notifyRemoved(this.state.playlistName)}}
                                 >Delete</Button>
                         </div>
                     </div>
@@ -74,8 +80,9 @@ class Playlist extends Component {
         
         return (
             <div className={styles.Playlist}>
+                <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT}/>
                 <div>
-                    <h1>{this.props.match.params.playlistName}</h1>
+                    <h1>{this.state.playlistName}</h1>
                     <div className={styles.EmptyPlaylist}>
                         {message}   
                     </div>

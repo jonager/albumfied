@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, Route, withRouter } from 'react-router-dom'; 
+import {ToastContainer, ToastStore} from 'react-toasts';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import fire from '../../fire';
@@ -13,7 +14,6 @@ import Playlists from './Playlists/Playlists';
 
 class Library extends Component {
     // TODO: display more than 50 albums in library.
-    // TODO: display message to tell users a playlist/album with that name already exists.
     constructor(props) {
         super(props);
         this.state = {
@@ -35,6 +35,17 @@ class Library extends Component {
         this.setState({
             showPlaylist: !this.state.showPlaylist
         });
+    }
+
+    notifyDelete = () => {
+        ToastStore.error('Album has been removed from Your Music!');
+    }
+    notifyDeletePlaylist = () => {
+        ToastStore.error('Playlist has been deleted!');
+    }
+
+    notifyAdded = (playlistName) => {
+        ToastStore.success(`Album has been added to ${playlistName}!`);
     }
 
     inputHandler = (e) => {
@@ -190,7 +201,7 @@ class Library extends Component {
                     <div key={playlist + new Date().getTime()}>
                         <a onClick={() => {
                                 this.checkAlbumExists(this.props.userId, playlist, this.state.albumToAdd)}}>
-                            <div className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
+                            <div onClick={() => {this.notifyAdded(playlist)}} className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
                                 <i className="fas fa-music"></i>
                             </div>
                         </a>
@@ -203,6 +214,7 @@ class Library extends Component {
         return (
             <div className={styles.Library}>
                 <div  className={styles.LibraryLinks}>
+                    <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT}/>
                     <NavLink 
                         activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}} 
                         to="/library/albums">My Albums</NavLink>
@@ -216,7 +228,7 @@ class Library extends Component {
                 </div>
 
                 <div className={styles.Cards}>
-                    <Route path="/library/playlists" render={() => <Playlists />} />
+                    <Route path="/library/playlists" render={() => <Playlists notify={this.notifyDeletePlaylist} />} />
                     {this.props.totalAlbums 
                         ? <Route  path="/library/albums" render={() =>  
                             <Card 
@@ -227,7 +239,8 @@ class Library extends Component {
                                 token={this.props.token} 
                                 delete={true} 
                                 playlist={true}
-                                results={totalAlbums} />}/> 
+                                results={totalAlbums}
+                                notifyDelete={this.notifyDelete} />}/> 
                         : null}
                 </div>
 
@@ -244,7 +257,7 @@ class Library extends Component {
                         >Cancel</Button>
                 </Modal>
                 <Modal show={this.state.showPlaylist} clicked={this.togleModalPlayist}>
-                    <div className={styles.Cards}>
+                    <div className={styles.Casrds}>
                         {playlists}
                     </div>
                 </Modal>
