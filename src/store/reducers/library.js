@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    totalAlbums: null,
+    totalAlbums: [],
+    offset: 0,
     playlists: null
 };
 
@@ -10,7 +11,8 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.SET_TOTAL_ALBUMS: 
             return {
                 ...state,
-                totalAlbums: action.totalAlbums
+                totalAlbums: [...state.totalAlbums, ...action.totalAlbums.items],
+                offset: state.offset + 18
             }
         case actionTypes.SET_PLAYLIST_NAME: 
             return {

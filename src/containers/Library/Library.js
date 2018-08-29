@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink, Route, withRouter } from 'react-router-dom'; 
 import {ToastContainer, ToastStore} from 'react-toasts';
+import Waypoint from 'react-waypoint';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import fire from '../../fire';
@@ -13,7 +14,6 @@ import Modal from '../../components/UI/Modal/Modal';
 import Playlists from './Playlists/Playlists';
 // https://albumfied.firebaseapp.com/callback
 class Library extends Component {
-    // TODO: display more than 50 albums in library.
     constructor(props) {
         super(props);
         this.state = {
@@ -64,7 +64,7 @@ class Library extends Component {
         this.inputRef.current.focus();
     }
 
-    getAlbumsSpotify = (token) => {
+    getAlbumsSpotify = (token, offset) => {
         axios({
             method: 'get',
             url: `https://api.spotify.com/v1/me/albums`,
@@ -75,15 +75,12 @@ class Library extends Component {
             },
             params: {
                 market: 'US',
-                limit:  50,
-                offset: 0
+                limit: 18,
+                offset: offset
             }
         })
         .then((response) => {
             this.props.onSetTotalAlbums(response.data);
-            this.props.history.push({
-                pathname: '/library/albums'
-            });
         })
         .catch((error) => {
             console.log(error);
@@ -175,9 +172,10 @@ class Library extends Component {
     };
 
     componentDidMount() {
-        let token = this.props.token;
-        this.getAlbumsSpotify(token);
         this.getPlaylistsFirebase(this.props.userId);
+        this.props.history.push({
+            pathname: '/library/albums'
+        });
     }
 
     componentWillUnmount() {
@@ -192,7 +190,7 @@ class Library extends Component {
    
     render() {
         let totalAlbums = null;
-        totalAlbums = this.props.totalAlbums ? this.props.totalAlbums.items: null;
+        totalAlbums = this.props.totalAlbums ? this.props.totalAlbums: null;
 
         let playlists = null;
         if(this.props.playlists) {
@@ -261,6 +259,9 @@ class Library extends Component {
                         {playlists}
                     </div>
                 </Modal>
+                <Waypoint
+                    onEnter={() => this.getAlbumsSpotify(this.props.token, this.props.offset)}
+                />
             </div>
         );
     }
@@ -271,7 +272,8 @@ const mapStateToProps = state => {
         userId: state.auth.userId,
         token: state.auth.spotifyToken,
         totalAlbums: state.library.totalAlbums,
-        playlists: state.library.playlists
+        playlists: state.library.playlists,
+        offset: state.library.offset
     }
 };
 
