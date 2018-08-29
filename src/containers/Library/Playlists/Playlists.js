@@ -15,7 +15,6 @@ class Playlists extends Component {
     }
 
     togleModalDelete = (playlist) => {
-        console.log(playlist)
         if(playlist) {
             this.setState({
                 playlistName: playlist,

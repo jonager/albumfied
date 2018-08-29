@@ -12,6 +12,10 @@
 # env variables
 env.js
 
+# firebase
+.firebase/
+.firebaserc
+firebase.json
 
 # misc
 .DS_Store

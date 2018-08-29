@@ -11,7 +11,7 @@ import styles from './Library.css';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
 import Playlists from './Playlists/Playlists';
-
+// https://albumfied.firebaseapp.com/callback
 class Library extends Component {
     // TODO: display more than 50 albums in library.
     constructor(props) {
@@ -257,7 +257,7 @@ class Library extends Component {
                         >Cancel</Button>
                 </Modal>
                 <Modal show={this.state.showPlaylist} clicked={this.togleModalPlayist}>
-                    <div className={styles.Casrds}>
+                    <div className={styles.Cards}>
                         {playlists}
                     </div>
                 </Modal>

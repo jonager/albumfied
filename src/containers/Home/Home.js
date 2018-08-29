@@ -8,7 +8,6 @@ class Home extends Component {
     state ={
         newReleases: null
     }
-    // #1db954
     
     notifyAdded = () => {
         ToastStore.success('Album has been saved to Your Music!');
