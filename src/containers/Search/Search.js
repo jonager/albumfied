@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {ToastContainer, ToastStore} from 'react-toasts';
 import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import SearchResult from './SearchResult/SearchResult';
 import axios from 'axios';
+import * as actions from '../../store/actions/index';
 
 class Search extends Component {
     state = {
@@ -63,12 +65,19 @@ class Search extends Component {
                     ?<SearchResult 
                         albums={this.state.results.albums.items}
                         artists={this.state.results.artists.items}
-                        notify={this.notifyAdded}/> 
+                        notify={this.notifyAdded}
+                        resetLibrary={this.props.onResetLibraryStore}/> 
                     : null}
             </div>
 
         );
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onResetLibraryStore: () => dispatch(actions.resetLibraryStore())
+    };
+};
  
-export default withRouter(Search);
+export default withRouter(connect(null, mapDispatchToProps)(Search));

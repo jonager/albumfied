@@ -17,10 +17,17 @@ class Album extends Component {
         playing: false,
         position: 0,
         duration: 0,
-        albumInfo: ""
+        albumInfo: "",
+        savedInLibrary: false
     };
 
     static playerCheckInterval = null;
+
+    albumSaved() {
+        this.setState ({
+            savedInLibrary: true
+        });
+    }
 
     handleCheckForPlayer() {
         //checks that the player is available to use
@@ -141,8 +148,51 @@ class Album extends Component {
         });
     };
 
+    checkAlbumSavedInLibrary = (albumId) => {
+        axios({
+            method: 'GET',
+            url: `https://api.spotify.com/v1/me/albums/contains`,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.props.token
+            },
+            params: {
+                ids: albumId,
+            }
+        })
+        .then((response => {
+            this.setState({
+                savedInLibrary: response.data[0]
+            });
+        }));
+    };
+
+    deleteAlbumSpotify = (token, albumId) => {
+        axios({
+            method: 'delete',
+            url: `https://api.spotify.com/v1/me/albums`,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            params: {
+                ids: albumId
+            }
+        })
+        .then(() => {
+            this.props.onResetLibraryStore();
+            this.setState({
+                savedInLibrary: false
+            });
+        })
+    };
+
     componentDidMount() {
-        this.getAlbum(this.props.match.params.id, this.props.token);
+        const albumId = this.props.match.params.id;
+        this.checkAlbumSavedInLibrary(albumId)
+        this.getAlbum(albumId, this.props.token);
     }
 
     render() {
@@ -159,6 +209,18 @@ class Album extends Component {
                         btnType={'PlayPause'}
                         clicked={() => {this.handleCheckForPlayer()}}
                         >Play</Button>
+                    {this.state.savedInLibrary 
+                        ? <p 
+                            onClick={() => this.deleteAlbumSpotify(this.props.token, this.props.match.params.id)} 
+                            className={styles.Remove}
+                            >remove from your library</p> 
+                        : <p 
+                            onClick={() => {
+                                utility.saveAlbumSpotify(this.props.token, this.props.match.params.id); 
+                                this.albumSaved();
+                                this.props.onResetLibraryStore();}} 
+                                className={styles.Save}
+                                >save to your library</p>}
                 </div>
                 : null;
 
@@ -201,7 +263,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetPlayStatus: (playing) => dispatch(actions.setPlayingStatus(playing))
+        onSetPlayStatus: (playing) => dispatch(actions.setPlayingStatus(playing)),
+        onResetLibraryStore: () => dispatch(actions.resetLibraryStore())
     };
 };
 

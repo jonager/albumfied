@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {ToastContainer, ToastStore} from 'react-toasts';
 import Card from '../../components/UI/Card/Card';
 import styles from './Home.css';
 import axios from 'axios';
+import * as actions from '../../store/actions/index';
 
 class Home extends Component {
     state ={
@@ -46,7 +48,8 @@ class Home extends Component {
             ? <Card 
                 results= {this.state.newReleases.albums.items} 
                 notify={this.notifyAdded}
-                save={true} /> 
+                save={true}
+                clicked3={this.props.onResetLibraryStore} /> 
             : null;
         
         return (
@@ -61,4 +64,10 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapDispatchToProps = dispatch => {
+    return {
+        onResetLibraryStore: () => dispatch(actions.resetLibraryStore())
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Home);

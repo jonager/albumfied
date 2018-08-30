@@ -6,6 +6,7 @@ import * as utility from '../../../shared/utility';
 
 const Card = (props) => {
     let card = props.results.map(item => {
+        const addedTime = props.totalAlbums ? item.added_at : null
         item = props.totalAlbums ? item.album : item;
         return (
             <div key={item.id} className={styles.Card}>
@@ -24,10 +25,10 @@ const Card = (props) => {
                         ? <Link to={'/artist/' + item.artists[0].id} title={item.artists[0].name}>{item.artists[0].name}</Link> 
                         : null}
                     {props.save 
-                        ? <Button btnType={'Save'} clicked={() => utility.saveAlbumSpotify(localStorage.getItem('token'), item.id)} clicked2={props.notify}>Save</Button>
+                        ? <Button btnType={'Save'} clicked={() => utility.saveAlbumSpotify(localStorage.getItem('token'), item.id)} clicked2={props.notify} clicked3={props.clicked3}>Save</Button>
                         : null}
                     {props.delete 
-                        ? <Button btnType={'DeleteMyAlbums'} clicked={() => props.clicked(props.token, item.id)} clicked2={props.notifyDelete}>Remove</Button>
+                        ? <Button btnType={'DeleteMyAlbums'} clicked={() => props.clicked(props.token, item.id, addedTime)} clicked2={props.notifyDelete}>Remove</Button>
                         : null}
                     {props.playlist 
                         ? <Button btnType={'Save'} clicked={props.togleModal} clicked2={() => props.clicked2(item.name, item.artists[0].name, item.id, item.artists[0].id, item.images[0].url)}>Add</Button>

@@ -36,3 +36,25 @@
     padding-right: 3em;
     height: 3em;
 }
+
+.Remove {
+    text-transform: uppercase;
+    color: #1db954; 
+    margin-top: 2em;
+    cursor: pointer;
+}
+
+.Save {
+    text-transform: uppercase;
+    color: white;
+    opacity: 0.85;
+    margin-top: 2em;
+    cursor: pointer;
+}
+
+.Remove:hover,
+.Save:hover {
+    transition: none 33ms cubic-bezier(.3,0,0,1);
+    transition-property: all;
+    transform: scale(1.06);
+}

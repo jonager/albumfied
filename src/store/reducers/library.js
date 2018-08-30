@@ -12,7 +12,19 @@ const reducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 totalAlbums: [...state.totalAlbums, ...action.totalAlbums.items],
-                offset: state.offset + 18
+                offset: state.offset + 50
+            }
+        case actionTypes.DELETE_ALBUM_FROM_STORE: 
+            return {
+                ...state,
+                totalAlbums: state.totalAlbums.filter( album => 
+                    album.added_at !== action.addedTime)
+            }
+        case actionTypes.RESET_LIBRARY_STORE: 
+            return {
+                ...state,
+                totalAlbums: [],
+                offset: 0
             }
         case actionTypes.SET_PLAYLIST_NAME: 
             return {

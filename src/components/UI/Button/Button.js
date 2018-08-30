@@ -8,6 +8,7 @@ const button = (props) => {
             onClick={()=> {
                 props.clicked(); 
                 if(props.clicked2){props.clicked2()}
+                if(props.clicked3){props.clicked3()}
             }}
         >{props.children}</button>
     );

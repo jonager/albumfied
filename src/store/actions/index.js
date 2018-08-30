@@ -6,7 +6,9 @@ export {
 
 export {
     setTotalAlbums,
-    setPlaylistName
+    deleteAlbumFromStore,
+    setPlaylistName,
+    resetLibraryStore
 } from './library';
 
 export {

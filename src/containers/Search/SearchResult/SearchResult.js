@@ -12,7 +12,7 @@ const SearchResult = (props) => {
             </div>
             <div className={styles.Cards}>
                 <Route path="/search/artists" render={() =>  <Card results={props.artists} />} />
-                <Route path="/search/albums" render={() => <Card results={props.albums} save={true} notify={props.notify} />} />
+                <Route path="/search/albums" render={() => <Card results={props.albums} save={true} notify={props.notify} clicked3={props.resetLibrary} />} />
             </div>
         </div>
     );

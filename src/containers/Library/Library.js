@@ -75,7 +75,7 @@ class Library extends Component {
             },
             params: {
                 market: 'US',
-                limit: 18,
+                limit: 50,
                 offset: offset
             }
         })
@@ -87,7 +87,7 @@ class Library extends Component {
         });
     };
 
-    deleteAlbumSpotify = (token, albumId) => {
+    deleteAlbumSpotify = (token, albumId, addedTime) => {
         axios({
             method: 'delete',
             url: `https://api.spotify.com/v1/me/albums`,
@@ -101,7 +101,7 @@ class Library extends Component {
             }
         })
         .then(() => {
-            this.getAlbumsSpotify(this.props.token)
+            this.props.deleteAlbumFromStore(addedTime);
         })
     };
 
@@ -280,6 +280,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onSetTotalAlbums: (totalAlbums) => dispatch(actions.setTotalAlbums(totalAlbums)),
+        deleteAlbumFromStore: (addedTime) => dispatch (actions.deleteAlbumFromStore(addedTime)),
         onSetPlaylistName: (playlists) => dispatch(actions.setPlaylistName(playlists))
     };
 };
