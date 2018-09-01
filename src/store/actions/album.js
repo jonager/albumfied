@@ -6,3 +6,17 @@ export const setPlayingStatus = (playing) => {
         playing: playing
     };
 };
+
+export const setCurrentTrackInfo = (currentTrack) => { 
+    return {
+        type: actionTypes.SET_CURRENT_TRACK_INFO,
+        currentTrack: currentTrack
+    };
+};
+
+export const setDeviceId = (deviceId) => { 
+    return {
+        type: actionTypes.SET_DEVICE_ID,
+        deviceId: deviceId
+    };
+};

@@ -1,7 +1,9 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    isPlaying: false
+    isPlaying: false,
+    currentTrack: null,
+    deviceId: null
 };
 
 const reducer = ( state = initialState, action ) => {
@@ -10,6 +12,16 @@ const reducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 isPlaying: action.playing
+            }
+        case actionTypes.SET_CURRENT_TRACK_INFO: 
+            return {
+                ...state,
+                currentTrack: action.currentTrack
+            }
+        case actionTypes.SET_DEVICE_ID: 
+            return {
+                ...state,
+                deviceId: action.deviceId
             }
         default:
             return state;

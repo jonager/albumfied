@@ -12,5 +12,7 @@ export {
 } from './library';
 
 export {
-    setPlayingStatus
+    setPlayingStatus,
+    setCurrentTrackInfo,
+    setDeviceId
 } from './album';

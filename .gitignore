@@ -17,6 +17,9 @@ env.js
 .firebaserc
 firebase.json
 
+#vscode
+.vscode/launch.json
+
 # misc
 .DS_Store
 .env.local

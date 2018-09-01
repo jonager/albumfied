@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
+import { Link } from 'react-router-dom';
+import {ToastContainer, ToastStore} from 'react-toasts';
+import axios from 'axios';
 import styles from './Album.css';
 import * as utility from '../../shared/utility';
 import * as actions from '../../store/actions/index';
@@ -23,6 +25,12 @@ class Album extends Component {
 
     static playerCheckInterval = null;
 
+    notifyAddedRemoved = (action) => {
+        action === 'success' 
+        ? ToastStore.success('Album has been saved to Your Music!')
+        : ToastStore.error('Album has been removed from Your Music!')
+    }
+
     albumSaved() {
         this.setState ({
             savedInLibrary: true
@@ -36,36 +44,24 @@ class Album extends Component {
         }, 1000);
     }
 
-    checkForPlayer() {
+    async checkForPlayer() {
         if (window.Spotify !== null) {
             clearTimeout(Album.playerCheckInterval);
             this.player = new window.Spotify.Player({
                 name: `${this.props.userId}'s Spotify Player`,
                 getOAuthToken: cb => { cb(this.props.token); },
             });
-            this.createEventHandlers();
-
             // finally, connect!
-            this.player.connect();
+            await this.player.connect();
+            await this.createEventHandlers();
         }
     }
 
     onStateChanged(state) {
         // if we're no longer listening to music, we'll get a null state.
-        if (state !== null) {
-            let {
-                current_track: currentTrack,
-                position,
-                duration,
-            } = state.track_window;
-            const trackName = currentTrack.name;
-            // const playing = !state.paused;
+        if (state !== null) {;
             this.props.onSetPlayStatus(!state.paused);
-            this.setState({
-                position,
-                duration,
-                trackName
-            });
+            this.props.onSetCurrentTrackInfo(state.track_window)
         }
     }
 
@@ -87,6 +83,7 @@ class Album extends Component {
         // Ready
         this.player.on('ready', async data => {
             let { device_id: deviceId } = data;
+            await this.props.onSetDeviceId(deviceId);
             await this.transferPlaybackHere(deviceId);
             await this.playAlbum(deviceId, this.props.match.params.id)
         });
@@ -109,7 +106,7 @@ class Album extends Component {
 
     getAlbum = (albumID, token) => {
         axios({
-            method: 'get',
+            method: 'GET',
             url: `https://api.spotify.com/v1/albums/${albumID}`,
             headers: {
                 'Accept': 'application/json',
@@ -203,34 +200,49 @@ class Album extends Component {
                         src={this.state.albumInfo.images[0].url}
                         alt="Album-cover" />
                     <h2>{this.state.albumInfo.name}</h2>
-                    <span>{this.state.albumInfo.artists[0].name}</span>
+                    <Link to={'/artist/' + this.state.albumInfo.artists[0].id}>
+                        <span>{this.state.albumInfo.artists[0].name}</span>
+                    </Link> 
                     <span>{`${this.state.albumInfo.release_date.slice(0, 4)} • ${this.state.albumInfo.tracks.items.length} SONGS`}</span>
                     <Button 
                         btnType={'PlayPause'}
-                        clicked={() => {this.handleCheckForPlayer()}}
+                        clicked={() => {
+                            this.props.isPlaying 
+                            ? this.playAlbum(this.props.deviceId, this.props.match.params.id) 
+                            : this.handleCheckForPlayer()
+                        }}
                         >Play</Button>
                     {this.state.savedInLibrary 
                         ? <p 
-                            onClick={() => this.deleteAlbumSpotify(this.props.token, this.props.match.params.id)} 
+                            onClick={() => { 
+                                this.deleteAlbumSpotify(this.props.token, this.props.match.params.id); 
+                                this.notifyAddedRemoved('remove');}} 
                             className={styles.Remove}
                             >remove from your library</p> 
                         : <p 
                             onClick={() => {
                                 utility.saveAlbumSpotify(this.props.token, this.props.match.params.id); 
                                 this.albumSaved();
-                                this.props.onResetLibraryStore();}} 
+                                this.props.onResetLibraryStore();
+                                this.notifyAddedRemoved('success');}} 
                                 className={styles.Save}
                                 >save to your library</p>}
                 </div>
                 : null;
 
         let tracks = null;
+
         if (this.state.albumInfo) {
-            let tracksArr = this.state.albumInfo.tracks.items
+            let currentTrackId = null;
+            if(this.props.currentTrack) {
+                currentTrackId = this.props.currentTrack.current_track.id;
+            }
+            let tracksArr = this.state.albumInfo.tracks.items;
+
             tracks = tracksArr.map(track => {
                 return (
                     <li className={styles.AlbumTracks} key={track.id}>
-                        <span>{track.name}</span>
+                        <span style={currentTrackId === track.id ? {color: '#1ed760'} : null}>{track.name}</span>
                         <span>{utility.millisToMinutesAndSeconds(track.duration_ms)}</span>
                     </li>
                 );
@@ -243,10 +255,11 @@ class Album extends Component {
                     {currentAlbum}
                 </React.Fragment>
                 <div>
-                    <ol>
+                    <ul>
                         {tracks}
-                    </ol>
+                    </ul>
                 </div>
+                <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT}/>
             </div>
         );
     }
@@ -257,14 +270,19 @@ const mapStateToProps = state => {
     return {
         token: state.auth.spotifyToken,
         userId: state.auth.userId,
-        loggedIn: state.auth.isAuth
+        loggedIn: state.auth.isAuth,
+        currentTrack: state.album.currentTrack,
+        isPlaying: state.album.isPlaying,
+        deviceId: state.album.deviceId
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         onSetPlayStatus: (playing) => dispatch(actions.setPlayingStatus(playing)),
-        onResetLibraryStore: () => dispatch(actions.resetLibraryStore())
+        onSetCurrentTrackInfo: (currentTrack) => dispatch(actions.setCurrentTrackInfo(currentTrack)),
+        onResetLibraryStore: () => dispatch(actions.resetLibraryStore()),
+        onSetDeviceId: (deviceId) => dispatch(actions.setDeviceId(deviceId))
     };
 };
 
