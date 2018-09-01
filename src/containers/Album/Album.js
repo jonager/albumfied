@@ -37,14 +37,14 @@ class Album extends Component {
         });
     }
 
-    handleCheckForPlayer() {
+    handleCheckForPlayer(index) {
         //checks that the player is available to use
         Album.playerCheckInterval = setTimeout(() => {
-            this.checkForPlayer();
+            this.checkForPlayer(index);
         }, 1000);
     }
 
-    async checkForPlayer() {
+    async checkForPlayer(index) {
         if (window.Spotify !== null) {
             clearTimeout(Album.playerCheckInterval);
             this.player = new window.Spotify.Player({
@@ -53,7 +53,7 @@ class Album extends Component {
             });
             // finally, connect!
             await this.player.connect();
-            await this.createEventHandlers();
+            await this.createEventHandlers(index);
         }
     }
 
@@ -65,7 +65,7 @@ class Album extends Component {
         }
     }
 
-    createEventHandlers() {
+    createEventHandlers(index) {
         // console.log(this)
         this.player.on('initialization_error', e => { console.error(e); });
         this.player.on('authentication_error', e => {
@@ -85,7 +85,7 @@ class Album extends Component {
             let { device_id: deviceId } = data;
             await this.props.onSetDeviceId(deviceId);
             await this.transferPlaybackHere(deviceId);
-            await this.playAlbum(deviceId, this.props.match.params.id)
+            await this.playAlbum(deviceId, this.props.match.params.id, index);
         });
     }
 
@@ -127,7 +127,7 @@ class Album extends Component {
             });
     };
 
-    playAlbum = (deviceId, albumId) => {
+    playAlbum = (deviceId, albumId, offset = 0) => {
         axios({
             method: 'PUT',
             url: `https://api.spotify.com/v1/me/player/play`,
@@ -140,7 +140,8 @@ class Album extends Component {
                 device_id: deviceId,
             },
             data: {
-                context_uri: `spotify:album:${albumId}`
+                context_uri: `spotify:album:${albumId}`,
+                offset: {"position": offset}
             }
         });
     };
@@ -217,8 +218,8 @@ class Album extends Component {
                             onClick={() => { 
                                 this.deleteAlbumSpotify(this.props.token, this.props.match.params.id); 
                                 this.notifyAddedRemoved('remove');}} 
-                            className={styles.Remove}
-                            >remove from your library</p> 
+                                className={styles.Remove}
+                                >remove from your library</p> 
                         : <p 
                             onClick={() => {
                                 utility.saveAlbumSpotify(this.props.token, this.props.match.params.id); 
@@ -239,10 +240,14 @@ class Album extends Component {
             }
             let tracksArr = this.state.albumInfo.tracks.items;
 
-            tracks = tracksArr.map(track => {
+            tracks = tracksArr.map((track, index) => {
                 return (
                     <li className={styles.AlbumTracks} key={track.id}>
-                        <span style={currentTrackId === track.id ? {color: '#1ed760'} : null}>{track.name}</span>
+                        <span onClick={() => {
+                            this.props.isPlaying
+                            ? this.playAlbum(this.props.deviceId, this.props.match.params.id, index)
+                            : this.handleCheckForPlayer(index)}}
+                            style={currentTrackId === track.id ? {color: '#1ed760'} : null}>{track.name}</span>
                         <span>{utility.millisToMinutesAndSeconds(track.duration_ms)}</span>
                     </li>
                 );
