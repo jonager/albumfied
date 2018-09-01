@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
 import Button from '../../components/UI/Button/Button';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import axios from 'axios';
 import styles from './NowPlayingBar.css';
+import * as utility from '../../shared/utility';
 
 class NowPlayingBar extends Component {
     playAlbum = () => {
@@ -54,6 +56,8 @@ class NowPlayingBar extends Component {
     };
 
     render() {
+        let albumCover, songName, artistName, artistId, albumId = null;
+
         let resumePauseAlbum = <Button
             btnType={'PlayingBar'}
             clicked={this.playAlbum}
@@ -65,9 +69,37 @@ class NowPlayingBar extends Component {
                 clicked={this.pauseAlbum}
                 ><i className="far fa-pause-circle"></i></Button>
         }
+
+        if (this.props.currentTrack) {
+            let albumInfo = this.props.currentTrack.current_track.album;
+            let currentTrack = this.props.currentTrack.current_track;
+
+            let imgURL = albumInfo.images[0].url;
+            songName = currentTrack.name;
+            artistName = currentTrack.artists[0].name;
+
+            artistId = utility.getIdFromURI(currentTrack.artists[0].uri);
+            albumId = utility.getIdFromURI(albumInfo.uri);
+
+            albumCover = <img style={{width:'85px', height: '85px'}} 
+                        src={imgURL} 
+                        alt="Album"/> 
+        }
         
         return (
             <div className={styles.NowPlayingBar}>
+                <div className={styles.TrackInfo}>
+                <Link to={'/album/' + albumId} title={songName}>{albumCover}</Link> 
+                    <div>
+                        <span>
+                            <Link to={'/album/' + albumId} title={songName}>{songName}</Link> 
+                        </span>
+                        <span>
+                            <Link to={'/artist/' + artistId} title={artistName}>{artistName}</Link> 
+                        </span>
+                    </div>
+                </div>
+
                 <div className={styles.PlayingButtons}>
                     <Button
                         btnType={'PlayingBar'}
@@ -87,7 +119,8 @@ class NowPlayingBar extends Component {
 const mapStateToProps = state => {
     return {
         token: state.auth.spotifyToken,
-        isPlaying: state.album.isPlaying
+        isPlaying: state.album.isPlaying,
+        currentTrack: state.album.currentTrack
     }
 };
 

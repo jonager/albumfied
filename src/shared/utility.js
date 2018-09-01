@@ -20,6 +20,10 @@ export const millisToMinutesAndSeconds = (millis) => {
     return min + ":" + (sec < 10 ? '0' : '') + sec;
 };
 
+export const getIdFromURI = (str) => {
+    return str.split(':')[2];
+};
+
 export const saveAlbumSpotify = (token, albumId) => {
     axios({
         method: 'put',
