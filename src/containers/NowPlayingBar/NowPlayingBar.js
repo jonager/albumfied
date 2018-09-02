@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../../components/UI/Button/Button';
+import Slider from '../../components/UI/Slider/Slider';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -7,6 +8,14 @@ import styles from './NowPlayingBar.css';
 import * as utility from '../../shared/utility';
 
 class NowPlayingBar extends Component {
+    state = {
+        volume: 100
+    }
+
+    sliderHandler = (event) => {
+        this.setVolume(event.target.value);
+    }
+
     playAlbum = () => {
         axios({
             method: 'PUT',
@@ -55,9 +64,25 @@ class NowPlayingBar extends Component {
         });
     };
 
+    setVolume = (volume = 100) => {
+        axios({
+            method: 'PUT',
+            url: `https://api.spotify.com/v1/me/player/volume`,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.props.token
+            },
+            params: {
+                volume_percent: volume,
+                device_id: this.props.deviceId
+            }
+        }).then(this.setState({volume: volume}));
+    };
+
     render() {
         let albumCover, songName, artistName, artistId, albumId = null;
-
+        
         let resumePauseAlbum = <Button
             btnType={'PlayingBar'}
             clicked={this.playAlbum}
@@ -85,7 +110,7 @@ class NowPlayingBar extends Component {
                         src={imgURL} 
                         alt="Album"/> 
         }
-        
+
         return (
             <div className={styles.NowPlayingBar}>
                 <div className={styles.TrackInfo}>
@@ -111,6 +136,9 @@ class NowPlayingBar extends Component {
                         clicked={this.playNextSong}
                         ><i className="fas fa-forward"></i></Button>
                 </div>
+                {this.props.currentTrack 
+                    ? <Slider volume={+this.state.volume} sliderHandler={this.sliderHandler}></Slider>
+                    : null}
             </div>
         );
     }
@@ -120,7 +148,8 @@ const mapStateToProps = state => {
     return {
         token: state.auth.spotifyToken,
         isPlaying: state.album.isPlaying,
-        currentTrack: state.album.currentTrack
+        currentTrack: state.album.currentTrack,
+        deviceId: state.album.deviceId
     }
 };
 
