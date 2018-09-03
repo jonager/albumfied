@@ -93,6 +93,7 @@ class Artist extends Component {
     }
 
     render() {
+        console.log(this.state.artist)
         let albumsCard, relatedArtistsCard, artistName, artistFollowers = null
 
         if (this.state.artist) {
@@ -105,7 +106,10 @@ class Artist extends Component {
 
         return (
             <div className={styles.Artist}>
-                <div className={styles.ArtistInfo}>
+                <div className={styles.ArtistInfo} 
+                    style={this.state.artist 
+                        ? {backgroundImage: `linear-gradient(to right bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),url("${this.state.artist.images[0].url}")`}
+                        :null}>
                     {artistName}
                     {artistFollowers}
                 </div>

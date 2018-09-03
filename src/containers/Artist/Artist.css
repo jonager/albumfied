@@ -1,5 +1,4 @@
 .Artist {
-    padding: 2em;
     background-color: #1E1E1E;
 }
 
@@ -12,7 +11,13 @@
 }
 
 .ArtistInfo {
-    padding: 3em 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80vh;
+    background-size: cover;
+    background-position: center center;
+    margin-bottom: 3em;
 }
 
 .ArtistInfo h1 {
@@ -21,6 +26,7 @@
     text-align: center;
     font-weight: bold;
     letter-spacing: 0.3px;
+    margin-bottom: 1em;
 }
 
 .ArtistInfo p {
@@ -35,6 +41,7 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-row-gap: 3em;
+    padding: 2em;
 }
 
 .FirstCard {
