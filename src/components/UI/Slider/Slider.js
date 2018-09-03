@@ -15,8 +15,8 @@ const SearchBar = (props) => {
 
     return (
         <div className={styles.SliderContainer}>
-            <i className={volumeClass}></i>
-            <input onMouseUp={props.sliderHandler} type="range" min="0" max="100" defaultValue="100" className={styles.Slider}></input>
+            <i onClick={() => props.muteVolume(volume)} className={volumeClass}></i>
+            <input ref={props.inputVolumeRef} onMouseUp={props.sliderHandler} type="range" min="0" max="100" defaultValue={props.volume} onChange={props.setInputValue} className={styles.Slider}></input>
         </div>
     )
 }

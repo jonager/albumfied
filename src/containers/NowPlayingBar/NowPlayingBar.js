@@ -9,8 +9,11 @@ import * as utility from '../../shared/utility';
 
 class NowPlayingBar extends Component {
     state = {
-        volume: 100
+        volume: 100,
+        unmutedVolume: null
     }
+
+    inputVolumeRef = React.createRef();
 
     sliderHandler = (event) => {
         this.setVolume(event.target.value);
@@ -77,8 +80,29 @@ class NowPlayingBar extends Component {
                 volume_percent: volume,
                 device_id: this.props.deviceId
             }
-        }).then(this.setState({volume: volume}));
+        }).then(
+            this.setState({
+                volume: volume
+            }));
     };
+
+    muteVolume = (volume) => {
+        if (this.state.unmutedVolume === null) {
+            this.inputVolumeRef.current.value = 0;
+            this.setVolume(0);
+            this.setState({
+                unmutedVolume: volume,
+                volume: 0
+            });
+        } else {
+            this.inputVolumeRef.current.value = this.state.unmutedVolume;
+            this.setVolume(this.state.unmutedVolume);
+            this.setState({
+                volume: this.state.unmutedVolume,
+                unmutedVolume: null
+            });
+        }
+    }
 
     render() {
         let albumCover, songName, artistName, artistId, albumId = null;
@@ -137,7 +161,12 @@ class NowPlayingBar extends Component {
                         ><i className="fas fa-forward"></i></Button>
                 </div>
                 {this.props.currentTrack 
-                    ? <Slider volume={+this.state.volume} sliderHandler={this.sliderHandler}></Slider>
+                    ? <Slider 
+                        muteVolume={this.muteVolume} 
+                        volume={+this.state.volume} 
+                        sliderHandler={this.sliderHandler}
+                        inputVolumeRef={this.inputVolumeRef}
+                        ></Slider>
                     : null}
             </div>
         );
