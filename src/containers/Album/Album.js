@@ -8,6 +8,7 @@ import axios from 'axios';
 import styles from './Album.css';
 import * as utility from '../../shared/utility';
 import * as actions from '../../store/actions/index';
+import * as Vibrant from 'node-vibrant';
 
 class Album extends Component {
     state = {
@@ -20,10 +21,34 @@ class Album extends Component {
         position: 0,
         duration: 0,
         albumInfo: "",
-        savedInLibrary: false
+        savedInLibrary: false,
+        color: null
     };
 
-    static playerCheckInterval = null;
+    playerCheckInterval = null;
+
+    getColor = (imgURL) => {
+        Vibrant.from(imgURL)
+            .getPalette()
+            .then((palette) => {
+                let availableColor = null;
+
+                if (palette.DarkVibrant) {
+                    availableColor = palette.DarkVibrant;
+                } else if (palette.Muted) {
+                    availableColor = palette.Muted;
+                } else if (palette.LightMuted) {
+                    availableColor = palette.LightMuted;
+                } else {
+                    availableColor = palette.LightVibrant;
+
+                }
+
+                this.setState({
+                    color: availableColor._rgb.join()
+                })
+            })
+    }
 
     notifyAddedRemoved = (action) => {
         action === 'success' 
@@ -121,6 +146,7 @@ class Album extends Component {
                 this.setState({
                     albumInfo: response.data
                 })
+                this.getColor(response.data.images[0].url);
             })
             .catch((error) => {
                 console.log(error);
@@ -255,7 +281,10 @@ class Album extends Component {
         }
 
         return (
-            <div className={styles.Album}>
+            <div className={styles.Album}
+                style={this.state.color 
+                    ? {backgroundImage: `linear-gradient(rgba(${this.state.color}, 0.75), rgba(7, 5, 10, 0.75) 85%)`}
+                    :null}>
                 <React.Fragment>
                     {currentAlbum}
                 </React.Fragment>
