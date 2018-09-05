@@ -14,16 +14,13 @@ import Modal from '../../components/UI/Modal/Modal';
 import Playlists from './Playlists/Playlists';
 // https://albumfied.firebaseapp.com/callback
 class Library extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showAdd: false,
-            showPlaylist: false,
-            albumToAdd: {}
-        }
+    state = {
+        showAdd: false,
+        showPlaylist: false,
+        albumToAdd: {}
+    }
 
-        this.inputRef = React.createRef();
-    }    
+    inputRef = React.createRef();   
 
     togleModalAdd = () => {
         this.setState({

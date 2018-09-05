@@ -93,7 +93,6 @@ class Artist extends Component {
     }
 
     render() {
-        console.log(this.state.artist)
         let albumsCard, relatedArtistsCard, artistName, artistFollowers = null
 
         if (this.state.artist) {

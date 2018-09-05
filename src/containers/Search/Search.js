@@ -13,7 +13,7 @@ class Search extends Component {
         results: null
     }
 
-    static timeout = null
+    timeout = null
 
     notifyAdded = () => {
         ToastStore.success('Album has been saved to Your Music!');

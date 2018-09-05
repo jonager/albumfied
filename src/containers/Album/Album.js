@@ -219,6 +219,12 @@ class Album extends Component {
         this.getAlbum(albumId, this.props.token);
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.id !== prevProps.match.params.id) {
+            this.getAlbum(this.props.match.params.id, this.props.token);
+        }
+      }
+
     render() {
         let currentAlbum =
             this.state.albumInfo
