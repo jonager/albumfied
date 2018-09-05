@@ -25,7 +25,8 @@ const reducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 spotifyToken: null,
-                userId: null
+                userId: null,
+                isAuth: false
             }
         default:
             return state;
