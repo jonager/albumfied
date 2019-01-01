@@ -1,0 +1,36 @@
+.ProgressBar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.CurrentPosition {
+    color: white;
+    font-size: 20px;
+}
+
+.Bar {
+    width: 65%;
+    margin: 0 10px;
+}
+
+.BarBackground {
+    width: 100%;
+    background-color: gray;
+    opacity: 0.6;
+    border-radius: 8px;
+}
+
+.BarForeground {
+    background-color: white;
+    opacity: 0.85;
+    width: 0;
+    height: 6px;
+    border-radius: 8px;
+}
+
+.TrackLength {
+    color: white;
+    font-size: 20px;
+}
