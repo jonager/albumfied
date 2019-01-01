@@ -3,17 +3,15 @@ import Header from '../../components/LayoutUnits/Header/Header';
 import styles from './Layout.css';
 
 class Layout extends Component {
-    state = {}
-    render() { 
-        return ( 
+    state = {};
+    render() {
+        return (
             <div className={styles.Layout}>
-                <Header/>
-                <main>
-                    {this.props.children}
-                </main>
+                <Header />
+                <main>{this.props.children}</main>
             </div>
-         )
+        );
     }
 }
- 
+
 export default Layout;

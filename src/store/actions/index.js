@@ -1,18 +1,16 @@
-export {
-    getAuth,
-    getUserId,
-    userLogout
-} from './auth';
+export { getAuth, getUserId, userLogout } from './auth';
 
 export {
     setTotalAlbums,
     deleteAlbumFromStore,
-    setPlaylistName,
+    setPlaylistsIds,
     resetLibraryStore
 } from './library';
 
 export {
     setPlayingStatus,
     setCurrentTrackInfo,
-    setDeviceId
+    setDeviceId,
+    setPlayer,
+    setPlayerState
 } from './album';

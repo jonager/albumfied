@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 1fr;
-    background-color: #1E1E1E;
+    background-color: #1e1e1e;
     padding-bottom: 10em;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .SearchResultLinks a:hover {
-    opacity: 0.95; 
+    opacity: 0.95;
 }
 
 .SearchResultLinks a.my-active {

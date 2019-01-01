@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 5em auto;
-    background-color: #1E1E1E;
+    background-color: #1e1e1e;
     grid-row-gap: 3em;
     padding-bottom: 10em;
 }
@@ -23,7 +23,8 @@
     text-align: center;
 }
 
-.Card, .Info {
+.Card,
+.Info {
     text-align: center;
 }
 
@@ -66,5 +67,5 @@
 }
 
 .EmptyPlaylist a {
-    color: #FF8360;
+    color: #ff8360;
 }

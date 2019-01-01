@@ -1,6 +1,6 @@
-.Hero{
+.Hero {
     height: 91vh;
-    background: url("../../assets/img/party.jpg") no-repeat center center;
+    background: url('../../assets/img/party.jpg') no-repeat center center;
     background-size: cover;
 }
 
@@ -25,7 +25,7 @@
     display: inline-block;
     padding: 8.5px 0;
     font-weight: bold;
-    background-color: black;
+    background-color: #1db954;
     color: white;
     text-decoration: none;
     width: 250px;

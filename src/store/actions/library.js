@@ -1,28 +1,28 @@
 import * as actionTypes from './actionTypes';
 
-export const setTotalAlbums = (totalAlbums) => {  
+export const setTotalAlbums = totalAlbums => {
     return {
         type: actionTypes.SET_TOTAL_ALBUMS,
         totalAlbums: totalAlbums
     };
 };
 
-export const deleteAlbumFromStore = (addedTime) => {    
+export const deleteAlbumFromStore = albumSpotifyId => {
     return {
         type: actionTypes.DELETE_ALBUM_FROM_STORE,
-        addedTime: addedTime
+        albumSpotifyId: albumSpotifyId
     };
 };
 
-export const resetLibraryStore = () => {    
+export const resetLibraryStore = () => {
     return {
         type: actionTypes.RESET_LIBRARY_STORE
     };
 };
 
-export const setPlaylistName = (playlists) => {    
+export const setPlaylistsIds = playlists => {
     return {
-        type: actionTypes.SET_PLAYLIST_NAME,
+        type: actionTypes.SET_PLAYLISTS_IDS,
         playlists: playlists
     };
 };

@@ -1,64 +1,67 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {ToastContainer, ToastStore} from 'react-toasts';
+import { ToastContainer, ToastStore } from 'react-toasts';
 import Card from '../../components/UI/Card/Card';
 import styles from './Home.css';
 import axios from 'axios';
 import * as actions from '../../store/actions/index';
 
 class Home extends Component {
-    state ={
+    state = {
         newReleases: null
-    }
-    
+    };
+
     notifyAdded = () => {
         ToastStore.success('Album has been saved to Your Music!');
-    }
+    };
 
-    getNewReleases = (token) => {
-        axios({
-            method: 'get',
-            url: `https://api.spotify.com/v1/browse/new-releases`,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            params: {
-                country: 'US',
-            }
-        })
-        .then((response) => {
-            this.setState({
-                newReleases: response.data
+    getNewReleases = () => {
+        axios
+            .get('/api/spotify/new-releases')
+            .then(response => {
+                this.setState({
+                    newReleases: response.data
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    };
+
+    saveAlbumSpotify = albumId => {
+        axios
+            .put(`/api/spotify/albums/save/${albumId}`)
+            .then(response => {
+                this.notifyAdded();
+                this.props.onResetLibraryStore();
+            })
+            .catch(response => console.log(response));
     };
 
     componentDidMount() {
-        this.getNewReleases(this.props.token)
+        this.getNewReleases();
     }
 
     render() {
         let newReleases = null;
-        newReleases = this.state.newReleases 
-            ? <Card 
-                results= {this.state.newReleases.albums.items} 
-                notify={this.notifyAdded}
+        newReleases = this.state.newReleases ? (
+            <Card
+                results={this.state.newReleases.albums.items.filter(
+                    item => item.album_type === 'album'
+                )}
                 save={true}
-                clicked3={this.props.onResetLibraryStore} /> 
-            : null;
-        
+                clicked={this.saveAlbumSpotify}
+            />
+        ) : null;
+
         return (
             <div className={styles.Home}>
-                <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT}/>
+                <ToastContainer
+                    store={ToastStore}
+                    position={ToastContainer.POSITION.TOP_RIGHT}
+                />
                 <h1>New Releases</h1>
-                <div className={styles.Cards}>
-                    {newReleases}    
-                </div>
+                <div className={styles.Cards}>{newReleases}</div>
             </div>
         );
     }
@@ -70,4 +73,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(
+    null,
+    mapDispatchToProps
+)(Home);

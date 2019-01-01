@@ -1,5 +1,5 @@
 .Artist {
-    background-color: #1E1E1E;
+    background-color: #1e1e1e;
 }
 
 .Artist h2 {
@@ -22,7 +22,7 @@
 
 .ArtistInfo h1 {
     color: white;
-    font-size: 5em; 
+    font-size: 5em;
     text-align: center;
     font-weight: bold;
     letter-spacing: 0.3px;
