@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 5em auto;
-    background-color: #1E1E1E;
+    background-color: #1e1e1e;
     grid-row-gap: 3em;
     padding-bottom: 10em;
 }
@@ -31,7 +31,7 @@
 }
 
 .LibraryLinks a:hover {
-    opacity: 0.95; 
+    opacity: 0.95;
 }
 
 .LibraryLinks a.my-active {
@@ -48,7 +48,7 @@
 
 .PlaylistInput {
     width: 100%;
-    padding: .5em;
+    padding: 0.5em;
     font-size: 5em;
     background-color: #282828;
     border: none;
@@ -63,7 +63,7 @@
     font-size: 1em;
 }
 
-.PlalistImg {
+.PlaylistImg {
     background: #282828;
     margin-bottom: 1em;
     display: flex;

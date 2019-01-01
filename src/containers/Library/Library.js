@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { NavLink, Route, withRouter } from 'react-router-dom'; 
-import {ToastContainer, ToastStore} from 'react-toasts';
+import { NavLink, Route, withRouter } from 'react-router-dom';
+import { ToastContainer, ToastStore } from 'react-toasts';
 import Waypoint from 'react-waypoint';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import fire from '../../fire';
 import * as actions from '../../store/actions/index';
 
 import Card from '../../components/UI/Card/Card';
@@ -12,46 +11,52 @@ import styles from './Library.css';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
 import Playlists from './Playlists/Playlists';
-// https://albumfied.firebaseapp.com/callback
+
 class Library extends Component {
     state = {
         showAdd: false,
         showPlaylist: false,
         albumToAdd: {}
-    }
+    };
 
-    inputRef = React.createRef();   
+    inputRef = React.createRef();
 
-    togleModalAdd = () => {
+    toggleModalAdd = () => {
         this.setState({
             showAdd: !this.state.showAdd
         });
-    }
+    };
 
-    togleModalPlayist = () => {
+    toggleModalPlaylist = () => {
         this.setState({
             showPlaylist: !this.state.showPlaylist
         });
-    }
+    };
 
     notifyDelete = () => {
         ToastStore.error('Album has been removed from Your Music!');
-    }
+    };
     notifyDeletePlaylist = () => {
         ToastStore.error('Playlist has been deleted!');
-    }
+    };
 
-    notifyAdded = (playlistName) => {
-        ToastStore.success(`Album has been added to ${playlistName}!`);
-    }
+    notifyAdded = () => {
+        ToastStore.success(`Album has been added to the playlist!`);
+    };
 
-    inputHandler = (e) => {
-        if(e.keyCode === 13) {
-            this.checkPlaylistExists(this.props.userId, e.target.value);
-            this.setState({
-                showAdd: false
-            });
-            e.target.value = '';
+    inputHandler = e => {
+        if (e.keyCode === 13) {
+            let name = e.target.value.trim();
+
+            if (name.length > 0) {
+                this.createPlaylist(e.target.value);
+                this.setState({
+                    showAdd: false
+                });
+                e.target.value = '';
+            } else {
+                ToastStore.error("Playlist name can't be empty");
+            }
         }
     };
 
@@ -61,203 +66,205 @@ class Library extends Component {
         this.inputRef.current.focus();
     }
 
-    getAlbumsSpotify = (token, offset) => {
-        axios({
-            method: 'get',
-            url: `https://api.spotify.com/v1/me/albums`,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            params: {
-                market: 'US',
-                limit: 50,
-                offset: offset
-            }
-        })
-        .then((response) => {
-            this.props.onSetTotalAlbums(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    getAlbumsSpotify = offset => {
+        axios
+            .get(`/api/spotify/albums/${offset}`)
+            .then(response => {
+                this.props.onSetTotalAlbums(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
 
-    deleteAlbumSpotify = (token, albumId, addedTime) => {
-        axios({
-            method: 'delete',
-            url: `https://api.spotify.com/v1/me/albums`,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-            params: {
-                ids: albumId
-            }
-        })
-        .then(() => {
-            this.props.deleteAlbumFromStore(addedTime);
-        })
+    deleteAlbumSpotify = albumSpotifyId => {
+        axios
+            .delete(`/api/spotify/albums/${albumSpotifyId}`)
+            .then(response => {
+                this.notifyDelete();
+                this.props.onDeleteAlbumFromStore(albumSpotifyId);
+            })
+            .catch(error => console.log(error));
     };
 
-    addPlaylistFirebase = (userId, playlistName) => {
-        fire.database().ref(`users/${userId}`).child('playlists').child(playlistName).set({
-            album: 0
-        });
-        this.props.history.push({
-            pathname: `/playlist/${playlistName}`
-        });
+    createPlaylist = name => {
+        axios
+            .post('/api/playlists', { name: name })
+            .then(response => {
+                this.props.history.push({
+                    pathname: `/playlist/${name}`
+                });
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            });
     };
 
-    checkPlaylistExists = (userId, playlistName) => {
-        const playlistsRef = fire.database().ref(`users/${userId}/playlists`);        
-        playlistsRef.child(playlistName).once('value', (snapshot) => {
-            if (!snapshot.exists()) {
-                this.addPlaylistFirebase(userId, playlistName);
-            } 
-        });
+    getPlaylists = userid => {
+        axios
+            .get('/api/playlists')
+            .then(response => {
+                this.props.onSetPlaylistsIds(response.data);
+            })
+            .catch(error => error.response.data);
     };
 
-    getPlaylistsFirebase = (userid) => {
-        this.ref = fire.database().ref(`users/${userid}/playlists`);
-        this.ref.on('value', (snapshot) => {
-            this.props.onSetPlaylistName(snapshot.val())
-        })
-    }
-
-    addAlbumFirebase = (userId, playlistName, albumToAdd) => {
-        fire.database().ref(`users/${userId}/playlists/${playlistName}`).push({
-            albumName: albumToAdd.albumName,
-            artistName: albumToAdd.artistName,
-            albumId: albumToAdd.albumId,
-            artistId: albumToAdd.artistId,
-            albumImg: albumToAdd.albumImg
-        });
+    addAlbum = (playlistId, albumToAdd) => {
+        axios
+            .post('/api/playlists/album', {
+                playlistId: playlistId,
+                albumToAdd: albumToAdd
+            })
+            .then(response => {
+                this.notifyAdded();
+                this.toggleModalPlaylist();
+            })
+            .catch(error => {
+                this.toggleModalPlaylist();
+            });
     };
 
-    checkAlbumExists = (userId, playlistName, albumToAdd) => {
-        const albumRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`);        
-        albumRef.orderByChild('albumId').equalTo(albumToAdd.albumId).once('value', (snapshot) => {
-            if (!snapshot.exists()) {
-                this.addAlbumFirebase(userId, playlistName, albumToAdd);
-            } 
-        });
-        this.togleModalPlayist();
-    };
-
-    deleteAlbum = (userId, playlistName, albumId) => {
-        let albumRef = fire.database().ref(`users/${userId}/playlists/${playlistName}`)
-        albumRef.orderByChild('albumId').equalTo(albumId).once('value', snapshot => {
-            let updates= {}
-            snapshot.forEach(child => updates[child.key] = null);
-            albumRef.update(updates);
-        });
-    }
-
-    albumToAdd = (albumName, artistName, albumId, artistId, albumImg) => {
+    albumToAdd = (
+        albumName,
+        artistName,
+        albumSpotifyId,
+        artistId,
+        albumImg
+    ) => {
         this.setState({
             albumToAdd: {
                 albumName: albumName,
                 artistName: artistName,
-                albumId: albumId,
+                albumSpotifyId: albumSpotifyId,
                 artistId: artistId,
-                albumImg:albumImg
+                albumImgURI: albumImg
             }
-        })
+        });
     };
 
     componentDidMount() {
-        this.getPlaylistsFirebase(this.props.userId);
+        this.getPlaylists();
         this.props.history.push({
             pathname: '/library/albums'
         });
     }
 
-    componentWillUnmount() {
-        this.ref.off('value');
-    }
-
-    componentDidUpdate(prevState) {
-        if(this.state.showAdd !== prevState.showAdd) {
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.location.pathname === prevProps.match.path) {
+            this.props.history.push({
+                pathname: '/library/albums'
+            });
+        }
+        if (this.state.showAdd !== prevState.showAdd) {
             this.focusInputModal();
         }
     }
-   
+
     render() {
         let totalAlbums = null;
-        totalAlbums = this.props.totalAlbums ? this.props.totalAlbums: null;
+        totalAlbums = this.props.totalAlbums ? this.props.totalAlbums : null;
 
         let playlists = null;
-        if(this.props.playlists) {
-            playlists = Object.keys(this.props.playlists).map(playlist => {
+        if (this.props.playlists) {
+            playlists = this.props.playlists.map(playlist => {
                 return (
-                    <div key={playlist + new Date().getTime()}>
-                        <a onClick={() => {
-                                this.checkAlbumExists(this.props.userId, playlist, this.state.albumToAdd)}}>
-                            <div onClick={() => {this.notifyAdded(playlist)}} className={styles.PlalistImg} style={{width:'250px', height:'250px'}}>
-                                <i className="fas fa-music"></i>
+                    <div key={playlist._id}>
+                        <a
+                            onClick={() => {
+                                this.addAlbum(
+                                    playlist._id,
+                                    this.state.albumToAdd
+                                );
+                            }}>
+                            <div
+                                className={styles.PlaylistImg}
+                                style={{ width: '250px', height: '250px' }}>
+                                <i className="fas fa-music" />
                             </div>
                         </a>
-                        <h2>{playlist}</h2>
+                        <h2>{playlist.name}</h2>
                     </div>
-                )
-            })
+                );
+            });
         }
 
         return (
             <div className={styles.Library}>
-                <div  className={styles.LibraryLinks}>
-                    <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT}/>
-                    <NavLink 
-                        activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}} 
-                        to="/library/albums">My Albums</NavLink>
-                    <NavLink 
-                        activeStyle={{color:'#1db954', borderBottom: '#7DCE82 4px inset'}}  
-                        to="/library/playlists">Playlists</NavLink>
+                <div className={styles.LibraryLinks}>
+                    <ToastContainer
+                        store={ToastStore}
+                        position={ToastContainer.POSITION.TOP_RIGHT}
+                    />
+                    <NavLink
+                        activeStyle={{
+                            color: '#1db954',
+                            borderBottom: '#7DCE82 4px inset'
+                        }}
+                        to="/library/albums">
+                        My Albums
+                    </NavLink>
+                    <NavLink
+                        activeStyle={{
+                            color: '#1db954',
+                            borderBottom: '#7DCE82 4px inset'
+                        }}
+                        to="/library/playlists">
+                        Playlists
+                    </NavLink>
                     <Button
                         btnType={'Login-Hero'}
-                        clicked={this.togleModalAdd}
-                        >New Playlist</Button>
+                        clicked={this.toggleModalAdd}>
+                        New Playlist
+                    </Button>
                 </div>
 
                 <div className={styles.Cards}>
-                    <Route path="/library/playlists" render={() => <Playlists notify={this.notifyDeletePlaylist} />} />
-                    {this.props.totalAlbums 
-                        ? <Route  path="/library/albums" render={() =>  
-                            <Card 
-                                totalAlbums={true} 
-                                clicked={this.deleteAlbumSpotify} 
-                                clicked2={this.albumToAdd}
-                                togleModal={this.togleModalPlayist}
-                                token={this.props.token} 
-                                delete={true} 
-                                playlist={true}
-                                results={totalAlbums}
-                                notifyDelete={this.notifyDelete} />}/> 
-                        : null}
+                    <Route
+                        path="/library/playlists"
+                        render={() => (
+                            <Playlists notify={this.notifyDeletePlaylist} />
+                        )}
+                    />
+                    {this.props.totalAlbums ? (
+                        <Route
+                            path="/library/albums"
+                            render={() => (
+                                <Card
+                                    totalAlbums={true}
+                                    clicked={this.deleteAlbumSpotify}
+                                    clicked2={this.albumToAdd}
+                                    togleModal={this.toggleModalPlaylist}
+                                    delete={true}
+                                    playlist={true}
+                                    results={totalAlbums}
+                                />
+                            )}
+                        />
+                    ) : null}
                 </div>
 
-                <Modal show={this.state.showAdd} clicked={this.togleModalAdd}>
+                <Modal show={this.state.showAdd} clicked={this.toggleModalAdd}>
                     <h1>Create new playlist</h1>
-                    <input 
-                        className={styles.PlaylistInput} 
-                        onKeyDown={this.inputHandler} 
-                        placeholder="Playlist name" type="text" 
-                        ref={this.inputRef}></input>
+                    <input
+                        className={styles.PlaylistInput}
+                        onKeyDown={this.inputHandler}
+                        placeholder="Playlist name"
+                        type="text"
+                        ref={this.inputRef}
+                    />
                     <Button
                         btnType={'PlaylistCancel'}
-                        clicked={this.togleModalAdd}
-                        >Cancel</Button>
+                        clicked={this.toggleModalAdd}>
+                        Cancel
+                    </Button>
                 </Modal>
-                <Modal show={this.state.showPlaylist} clicked={this.togleModalPlayist}>
-                    <div className={styles.Cards}>
-                        {playlists}
-                    </div>
+                <Modal
+                    show={this.state.showPlaylist}
+                    clicked={this.toggleModalPlaylist}>
+                    <div className={styles.Cards}>{playlists}</div>
                 </Modal>
                 <Waypoint
-                    onEnter={() => this.getAlbumsSpotify(this.props.token, this.props.offset)}
+                    onEnter={() => this.getAlbumsSpotify(this.props.offset)}
                 />
             </div>
         );
@@ -271,15 +278,23 @@ const mapStateToProps = state => {
         totalAlbums: state.library.totalAlbums,
         playlists: state.library.playlists,
         offset: state.library.offset
-    }
+    };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSetTotalAlbums: (totalAlbums) => dispatch(actions.setTotalAlbums(totalAlbums)),
-        deleteAlbumFromStore: (addedTime) => dispatch (actions.deleteAlbumFromStore(addedTime)),
-        onSetPlaylistName: (playlists) => dispatch(actions.setPlaylistName(playlists))
+        onSetTotalAlbums: totalAlbums =>
+            dispatch(actions.setTotalAlbums(totalAlbums)),
+        onDeleteAlbumFromStore: albumSpotifyId =>
+            dispatch(actions.deleteAlbumFromStore(albumSpotifyId)),
+        onSetPlaylistsIds: playlists =>
+            dispatch(actions.setPlaylistsIds(playlists))
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Library));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(Library)
+);
