@@ -13,7 +13,7 @@
 env.js
 
 #vscode
-.vscode/launch.json
+/.vscode
 
 # misc
 .DS_Store
