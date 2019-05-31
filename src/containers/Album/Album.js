@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import { Link } from 'react-router-dom';
-import { ToastContainer, ToastStore } from 'react-toasts';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import styles from './Album.css';
 import * as utility from '../../shared/utility';
@@ -48,8 +48,8 @@ class Album extends Component {
 
     notifyAddedRemoved = action => {
         action === 'success'
-            ? ToastStore.success('Album has been saved to Your Music!')
-            : ToastStore.error('Album has been removed from Your Music!');
+            ? toast.success('Album has been saved to Your Music!')
+            : toast.error('Album has been removed from Your Music!');
     };
 
     async checkForPlayer(index) {
@@ -307,10 +307,6 @@ class Album extends Component {
                 <div>
                     <ul>{tracks}</ul>
                 </div>
-                <ToastContainer
-                    store={ToastStore}
-                    position={ToastContainer.POSITION.TOP_RIGHT}
-                />
             </div>
         );
     }

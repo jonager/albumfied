@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ToastContainer, ToastStore } from 'react-toasts';
+import { toast } from 'react-toastify';
 import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import SearchResult from './SearchResult/SearchResult';
 import axios from 'axios';
@@ -15,7 +15,7 @@ class Search extends Component {
     timeout = null;
 
     notifyAdded = () => {
-        ToastStore.success('Album has been saved to Your Music!');
+        toast.success('Album has been saved to Your Music!');
     };
 
     searchItem = searchQuery => {
@@ -56,10 +56,6 @@ class Search extends Component {
     render() {
         return (
             <div>
-                <ToastContainer
-                    store={ToastStore}
-                    position={ToastContainer.POSITION.TOP_RIGHT}
-                />
                 <SearchBar inputHandler={this.inputChangeHandler} />
                 {this.state.results ? (
                     <SearchResult

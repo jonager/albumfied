@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ToastContainer, ToastStore } from 'react-toasts';
+import { toast } from 'react-toastify';
 import Card from '../../components/UI/Card/Card';
 import styles from './Home.css';
 import axios from 'axios';
@@ -11,17 +11,19 @@ class Home extends Component {
         newReleases: null
     };
 
-    notifyAdded = () => {
-        ToastStore.success('Album has been saved to Your Music!');
-    };
+    _isMounted = false;
+
+    notifyAdded = () => toast.success('Album has been saved to Your Music!');
 
     getNewReleases = () => {
         axios
             .get('/api/spotify/new-releases')
             .then(response => {
-                this.setState({
-                    newReleases: response.data
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        newReleases: response.data
+                    });
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -39,7 +41,12 @@ class Home extends Component {
     };
 
     componentDidMount() {
+        this._isMounted = true;
         this.getNewReleases();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {
@@ -56,10 +63,6 @@ class Home extends Component {
 
         return (
             <div className={styles.Home}>
-                <ToastContainer
-                    store={ToastStore}
-                    position={ToastContainer.POSITION.TOP_RIGHT}
-                />
                 <h1>New Releases</h1>
                 <div className={styles.Cards}>{newReleases}</div>
             </div>

@@ -3,7 +3,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './App.css';
 import * as actions from './store/actions/index';
-
+import { ToastContainer } from 'react-toastify';
 import Layout from './hoc/Layout/Layout';
 import LandingPage from './components/LandingPage/LandingPage';
 import Auth from './containers/Auth/Auth';
@@ -70,6 +70,7 @@ class App extends Component {
         return (
             <div className={styles.App}>
                 <Layout isAuth={this.props.isAuth}>{routes}</Layout>
+                <ToastContainer autoClose={5000} />
             </div>
         );
     }

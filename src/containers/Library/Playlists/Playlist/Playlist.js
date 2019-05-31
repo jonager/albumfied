@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { ToastContainer, ToastStore } from 'react-toasts';
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import styles from './Playlist.css';
 import Button from '../../../../components/UI/Button/Button';
@@ -13,7 +13,7 @@ class Playlist extends Component {
     };
 
     notifyRemoved = playlistName => {
-        ToastStore.error(`Album has been removed from ${playlistName}!`);
+        toast.error(`Album has been removed from ${playlistName}!`);
     };
 
     getAlbums = playlistId => {
@@ -102,10 +102,6 @@ class Playlist extends Component {
 
         return (
             <div className={styles.Playlist}>
-                <ToastContainer
-                    store={ToastStore}
-                    position={ToastContainer.POSITION.TOP_RIGHT}
-                />
                 <div>
                     <h1>{this.state.playlistName}</h1>
                     <div className={styles.EmptyPlaylist}>{message}</div>

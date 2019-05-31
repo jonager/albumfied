@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, Route, withRouter } from 'react-router-dom';
-import { ToastContainer, ToastStore } from 'react-toasts';
+import { toast } from 'react-toastify';
 import Waypoint from 'react-waypoint';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -34,14 +34,14 @@ class Library extends Component {
     };
 
     notifyDelete = () => {
-        ToastStore.error('Album has been removed from Your Music!');
+        toast.error('Album has been removed from Your Music!');
     };
     notifyDeletePlaylist = () => {
-        ToastStore.error('Playlist has been deleted!');
+        toast.error('Playlist has been deleted!');
     };
 
     notifyAdded = () => {
-        ToastStore.success(`Album has been added to the playlist!`);
+        toast.success(`Album has been added to the playlist!`);
     };
 
     inputHandler = e => {
@@ -55,7 +55,7 @@ class Library extends Component {
                 });
                 e.target.value = '';
             } else {
-                ToastStore.error("Playlist name can't be empty");
+                toast.info("Playlist name can't be empty");
             }
         }
     };
@@ -96,7 +96,9 @@ class Library extends Component {
                 });
             })
             .catch(error => {
-                console.log(error.response.data);
+                if (error.response.status === 400) {
+                    toast.info(error.response.data.nameTaken);
+                }
             });
     };
 
@@ -120,6 +122,9 @@ class Library extends Component {
                 this.toggleModalPlaylist();
             })
             .catch(error => {
+                if (error.response.status === 400) {
+                    toast.info(error.response.data.albumexists);
+                }
                 this.toggleModalPlaylist();
             });
     };
@@ -191,10 +196,6 @@ class Library extends Component {
         return (
             <div className={styles.Library}>
                 <div className={styles.LibraryLinks}>
-                    <ToastContainer
-                        store={ToastStore}
-                        position={ToastContainer.POSITION.TOP_RIGHT}
-                    />
                     <NavLink
                         activeStyle={{
                             color: '#1db954',
