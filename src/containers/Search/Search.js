@@ -30,14 +30,19 @@ class Search extends Component {
                 });
             })
             .catch(error => {
-                console.log(error);
+                if (error.response.status === 404) {
+                    toast.info(error.response.data.nofound);
+                }
             });
     };
 
     inputChangeHandler = event => {
         event.persist();
         clearTimeout(Search.timeout);
-
+        if (event.target.value.length === 0) {
+            toast.info("Album/Artist name can't be empty.");
+            return;
+        }
         Search.timeout = setTimeout(() => {
             this.searchItem(event.target.value);
         }, 1000);

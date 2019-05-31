@@ -70,7 +70,7 @@ class App extends Component {
         return (
             <div className={styles.App}>
                 <Layout isAuth={this.props.isAuth}>{routes}</Layout>
-                <ToastContainer autoClose={5000} />
+                <ToastContainer autoClose={2000} />
             </div>
         );
     }
