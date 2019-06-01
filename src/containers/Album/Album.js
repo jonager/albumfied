@@ -8,7 +8,8 @@ import axios from 'axios';
 import styles from './Album.css';
 import * as utility from '../../shared/utility';
 import * as actions from '../../store/actions/index';
-import * as Vibrant from 'node-vibrant';
+import * as getPixels from 'get-pixels';
+import * as palette from 'get-rgba-palette';
 
 class Album extends Component {
     state = {
@@ -25,25 +26,13 @@ class Album extends Component {
     player = null;
 
     getColor = imgURL => {
-        Vibrant.from(imgURL)
-            .getPalette()
-            .then(palette => {
-                let availableColor = null;
+        getPixels(imgURL, (err, pixels) => {
+            let color = palette(pixels.data, 1);
 
-                if (palette.DarkVibrant) {
-                    availableColor = palette.DarkVibrant;
-                } else if (palette.Muted) {
-                    availableColor = palette.Muted;
-                } else if (palette.LightMuted) {
-                    availableColor = palette.LightMuted;
-                } else {
-                    availableColor = palette.LightVibrant;
-                }
-
-                this.setState({
-                    color: availableColor._rgb.join()
-                });
+            this.setState({
+                color: color.join()
             });
+        });
     };
 
     notifyAddedRemoved = action => {
@@ -125,11 +114,11 @@ class Album extends Component {
         axios
             .get(`/api/spotify/album/${albumId}`)
             .then(response => {
+                this.getColor(response.data.images[0].url);
+                this.getAlbumLength(response.data.tracks.items);
                 this.setState({
                     albumInfo: response.data
                 });
-                this.getColor(response.data.images[0].url);
-                this.getAlbumLength(response.data.tracks.items);
             })
             .catch(error => {
                 console.log(error);
