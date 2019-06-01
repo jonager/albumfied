@@ -129,10 +129,23 @@ class Album extends Component {
                     albumInfo: response.data
                 });
                 this.getColor(response.data.images[0].url);
+                this.getAlbumLength(response.data.tracks.items);
             })
             .catch(error => {
                 console.log(error);
             });
+    };
+
+    getAlbumLength = albumTracks => {
+        let albumLength = null;
+
+        albumTracks.forEach(
+            albumTrack => (albumLength += albumTrack.duration_ms)
+        );
+
+        this.setState({
+            albumLength: utility.millisToMinutesAndSeconds(albumLength)
+        });
     };
 
     playAlbum = (deviceId, albumId, offset = 0) => {
@@ -222,6 +235,7 @@ class Album extends Component {
                 <span>{`${this.state.albumInfo.release_date.slice(0, 4)} • ${
                     this.state.albumInfo.tracks.items.length
                 } SONGS`}</span>
+                <p>{`Length ${this.state.albumLength}`}</p>
                 <Button
                     btnType={'PlayPause'}
                     clicked={() => {
