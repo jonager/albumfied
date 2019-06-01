@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Button from '../../../components/UI/Button/Button';
 import Modal from '../../../components/UI/Modal/Modal';
 import axios from 'axios';
+import * as utility from '../../../shared/utility';
 
 class Playlists extends Component {
     // TODO: add cover to playlist
@@ -58,51 +59,19 @@ class Playlists extends Component {
 
     render() {
         let playlists = null;
-        let firstFourAlbums = [];
 
-        // add cover picture to the playlists
         if (this.props.playlists) {
             playlists = this.props.playlists.map((playlist, idx) => {
-                // grab the first 4 albums added to the playlist
-                firstFourAlbums.push(playlist.albums.slice(-4));
-                let imgStyle = { width: '225px', height: '225px' };
-
-                if (firstFourAlbums[idx].length === 0) {
-                    imgStyle = { width: '225px', height: '225px' };
-                } else if (firstFourAlbums[idx].length < 4) {
-                    imgStyle = {
-                        ...imgStyle,
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundImage: `url(${
-                            firstFourAlbums[idx][
-                                firstFourAlbums[idx].length - 1
-                            ].albumImgURI
-                        })`,
-                        backgroundPosition: `center center`
-                    };
-                } else {
-                    imgStyle = {
-                        ...imgStyle,
-                        backgroundSize: '50%',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundImage: `url(${
-                            firstFourAlbums[idx][0].albumImgURI
-                        }),
-                        url(${firstFourAlbums[idx][1].albumImgURI}),
-                        url(${firstFourAlbums[idx][2].albumImgURI}),
-                        url(${firstFourAlbums[idx][3].albumImgURI})`,
-                        backgroundPosition: `0% 0%, 100% 0%, 100% 100%, 0% 100%`
-                    };
-                }
+                // get cover pictures for the playlist
+                let coverStyling = utility.getCoverStyling(playlist);
 
                 return (
                     <div className={styles.Card} key={playlist._id}>
                         <Link to={'/playlist/' + playlist._id}>
                             <div
                                 className={styles.PlaylistImg}
-                                style={imgStyle}>
-                                {firstFourAlbums[idx].length === 0 ? (
+                                style={coverStyling}>
+                                {playlist.albums.length === 0 ? (
                                     <i className="fas fa-music" />
                                 ) : null}
                             </div>
@@ -124,6 +93,7 @@ class Playlists extends Component {
                 );
             });
         }
+
         return (
             <React.Fragment>
                 {playlists}

@@ -11,6 +11,7 @@ import styles from './Library.css';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
 import Playlists from './Playlists/Playlists';
+import * as utility from '../../shared/utility';
 
 class Library extends Component {
     state = {
@@ -172,6 +173,8 @@ class Library extends Component {
         let playlists = null;
         if (this.props.playlists) {
             playlists = this.props.playlists.map(playlist => {
+                // get cover pictures for the playlist
+                let coverStyling = utility.getCoverStyling(playlist);
                 return (
                     <div key={playlist._id}>
                         <a
@@ -183,8 +186,10 @@ class Library extends Component {
                             }}>
                             <div
                                 className={styles.PlaylistImg}
-                                style={{ width: '250px', height: '250px' }}>
-                                <i className="fas fa-music" />
+                                style={coverStyling}>
+                                {playlist.albums.length === 0 ? (
+                                    <i className="fas fa-music" />
+                                ) : null}
                             </div>
                         </a>
                         <h2>{playlist.name}</h2>
