@@ -266,24 +266,37 @@ class Album extends Component {
 
             tracks = tracksArr.map((track, index) => {
                 return (
-                    <li className={styles.AlbumTracks} key={track.id}>
-                        <span
-                            onClick={() => {
-                                this.props.isPlaying
-                                    ? this.playAlbum(
-                                          this.props.deviceId,
-                                          this.props.match.params.id,
-                                          index
-                                      )
-                                    : this.checkForPlayer(index);
-                            }}
-                            style={
-                                currentTrackId === track.id
-                                    ? { color: '#1ed760' }
-                                    : null
-                            }>
-                            {track.name}
-                        </span>
+                    <li
+                        onClick={() => {
+                            this.props.isPlaying
+                                ? this.playAlbum(
+                                      this.props.deviceId,
+                                      this.props.match.params.id,
+                                      index
+                                  )
+                                : this.checkForPlayer(index);
+                        }}
+                        className={styles.AlbumTracks}
+                        style={
+                            currentTrackId === track.id
+                                ? { color: '#1ed760' }
+                                : null
+                        }
+                        key={track.id}>
+                        <div>
+                            <span
+                                style={{
+                                    marginRight: '.8em',
+                                    fontSize: '.75em'
+                                }}>
+                                {currentTrackId === track.id ? (
+                                    <i class="fas fa-headphones" />
+                                ) : (
+                                    <i className="fas fa-music" />
+                                )}
+                            </span>
+                            <span>{track.name}</span>
+                        </div>
                         <span>
                             {utility.millisToMinutesAndSeconds(
                                 track.duration_ms
