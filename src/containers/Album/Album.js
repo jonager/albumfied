@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import styles from './Album.css';
 import * as utility from '../../shared/utility';
@@ -290,7 +291,7 @@ class Album extends Component {
                                     fontSize: '.75em'
                                 }}>
                                 {currentTrackId === track.id ? (
-                                    <i class="fas fa-headphones" />
+                                    <i className="fas fa-headphones" />
                                 ) : (
                                     <i className="fas fa-music" />
                                 )}
@@ -323,6 +324,13 @@ class Album extends Component {
                 <div>
                     <ul>{tracks}</ul>
                 </div>
+                <Helmet>
+                    <title>
+                        {this.props.currentTrack
+                            ? this.props.currentTrack.current_track.name
+                            : 'Albumfied'}
+                    </title>
+                </Helmet>
             </div>
         );
     }
