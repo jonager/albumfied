@@ -103,7 +103,7 @@ class Library extends Component {
             });
     };
 
-    getPlaylists = userid => {
+    getPlaylists = () => {
         axios
             .get('/api/playlists')
             .then(response => {
@@ -119,6 +119,7 @@ class Library extends Component {
                 albumToAdd: albumToAdd
             })
             .then(response => {
+                this.getPlaylists(); // run again, so playlists cover in modal get updated
                 this.notifyAdded();
                 this.toggleModalPlaylist();
             })
